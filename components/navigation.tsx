@@ -3,6 +3,7 @@
 
 import { useState } from "react"
 import Link from "next/link"
+import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { Menu, X, Phone } from "lucide-react"
 
@@ -25,9 +26,25 @@ export function Navigation() {
         <div className="flex justify-between items-center h-16">
           {/* Logo – Glamour Hub */}
           <Link href="/" className="flex items-center space-x-1">
-            <div className="text-2xl font-bold tracking-tight">
-              Glamour<span className="text-accent">Hub</span>
-            </div>
+            <div className="flex items-center space-x-3">
+  {/* Logo Image */}
+  <Image 
+    src="/logo.png" 
+    alt="GlamourHub" 
+    width={44} 
+    height={44}
+    className="flex-shrink-0"
+    priority 
+  />
+  
+  {/* Text with Black + Gold */}
+  <div>
+    <div className="text-2xl font-bold tracking-tight text-black dark:text-white">
+      Glamour<span className="text-accent">Hub</span>
+    </div>
+  </div>
+</div>
+
           </Link>
 
           {/* Desktop Navigation */}

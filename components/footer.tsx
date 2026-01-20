@@ -1,5 +1,6 @@
 // components/footer.tsx
 import Link from "next/link"
+import Image from "next/image"
 import { MapPin, Phone, Mail, Clock, Instagram, Facebook, Twitter } from "lucide-react"
 
 export function Footer() {
@@ -10,9 +11,26 @@ export function Footer() {
 
           {/* Brand */}
           <div className="space-y-5">
-            <div className="text-3xl font-bold tracking-tight">
-              Glamour<span className="text-accent">Hub</span>
-            </div>
+            <div className="flex items-center space-x-3">
+  {/* Logo Image */}
+  <Image 
+    src="/logo.png" 
+    alt="GlamourHub" 
+    width={44} 
+    height={44}
+    className="flex-shrink-0"
+    priority 
+  />
+  
+  {/* Text with Black + Gold */}
+  <div>
+    <div className="text-2xl font-bold tracking-tight text-white dark:text-white">
+      Glamour<span className="text-accent">Hub</span>
+    </div>
+    <div className="text-xs text-muted-foreground">Beauty Studio</div>
+  </div>
+</div>
+
             <p className="text-primary-foreground/80 text-sm leading-relaxed max-w-xs">
               Your premium beauty studio & online shop in Maitama, Abuja. 
               Professional services and curated beauty products delivered nationwide.
