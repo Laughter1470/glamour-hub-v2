@@ -1,105 +1,107 @@
+// components/footer.tsx
 import Link from "next/link"
 import { MapPin, Phone, Mail, Clock, Instagram, Facebook, Twitter } from "lucide-react"
 
 export function Footer() {
   return (
     <footer className="bg-primary text-primary-foreground">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+      <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
+
           {/* Brand */}
-          <div className="space-y-4">
-            <div className="text-2xl font-bold">
-              Hair<span className="text-accent">volution</span>
+          <div className="space-y-5">
+            <div className="text-3xl font-bold tracking-tight">
+              Glamour<span className="text-accent">Hub</span>
             </div>
-            <p className="text-primary-foreground/80 text-sm">
-              Redefining beauty in Abuja with premium salon services and exceptional customer care.
+            <p className="text-primary-foreground/80 text-sm leading-relaxed max-w-xs">
+              Your premium beauty studio & online shop in Maitama, Abuja. 
+              Professional services and curated beauty products delivered nationwide.
             </p>
-            <div className="flex space-x-4">
-              <Link href="#" className="text-primary-foreground/80 hover:text-accent transition-colors">
+            <div className="flex space-x-5">
+              <Link href="#" className="text-primary-foreground/70 hover:text-accent transition-colors">
                 <Instagram className="h-5 w-5" />
+                <span className="sr-only">Instagram</span>
               </Link>
-              <Link href="#" className="text-primary-foreground/80 hover:text-accent transition-colors">
+              <Link href="#" className="text-primary-foreground/70 hover:text-accent transition-colors">
                 <Facebook className="h-5 w-5" />
+                <span className="sr-only">Facebook</span>
               </Link>
-              <Link href="#" className="text-primary-foreground/80 hover:text-accent transition-colors">
+              <Link href="#" className="text-primary-foreground/70 hover:text-accent transition-colors">
                 <Twitter className="h-5 w-5" />
+                <span className="sr-only">Twitter</span>
               </Link>
             </div>
           </div>
 
           {/* Quick Links */}
-          <div className="space-y-4">
+          <div className="space-y-5">
             <h3 className="text-lg font-semibold">Quick Links</h3>
-            <ul className="space-y-2 text-sm">
-              <li>
-                <Link href="/about" className="text-primary-foreground/80 hover:text-accent transition-colors">
-                  About Us
-                </Link>
-              </li>
-              <li>
-                <Link href="/services" className="text-primary-foreground/80 hover:text-accent transition-colors">
-                  Services
-                </Link>
-              </li>
-              <li>
-                <Link href="/gallery" className="text-primary-foreground/80 hover:text-accent transition-colors">
-                  Gallery
-                </Link>
-              </li>
-              <li>
-                <Link href="/shop" className="text-primary-foreground/80 hover:text-accent transition-colors">
-                  Shop
-                </Link>
-              </li>
-              <li>
-                <Link href="/booking" className="text-primary-foreground/80 hover:text-accent transition-colors">
-                  Book Appointment
-                </Link>
-              </li>
+            <ul className="space-y-3 text-sm">
+              {["About", "Services", "Gallery", "Shop", "Booking", "Contact"].map((item) => (
+                <li key={item}>
+                  <Link
+                    href={`/${item.toLowerCase().replace(/\s+/g, "-").replace(/-now$/, "")}`}
+                    className="text-primary-foreground/80 hover:text-accent transition-colors"
+                  >
+                    {item}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 
-          {/* Services */}
-          <div className="space-y-4">
-            <h3 className="text-lg font-semibold">Services</h3>
-            <ul className="space-y-2 text-sm">
-              <li className="text-primary-foreground/80">Hair Styling</li>
-              <li className="text-primary-foreground/80">Hair Coloring</li>
-              <li className="text-primary-foreground/80">Braiding & Weaving</li>
-              <li className="text-primary-foreground/80">Spa Treatments</li>
-              <li className="text-primary-foreground/80">Nail Services</li>
+          {/* Popular Services */}
+          <div className="space-y-5">
+            <h3 className="text-lg font-semibold">Popular Services</h3>
+            <ul className="space-y-2 text-sm text-primary-foreground/80">
+              <li>Hair Styling & Coloring</li>
+              <li>Professional Makeup</li>
+              <li>Manicure & Pedicure</li>
+              <li>Spa & Wellness Treatments</li>
+              <li>Bridal Packages</li>
             </ul>
           </div>
 
-          {/* Contact Info */}
-          <div className="space-y-4">
-            <h3 className="text-lg font-semibold">Contact Info</h3>
-            <div className="space-y-3 text-sm">
-              <div className="flex items-start space-x-2">
-                <MapPin className="h-4 w-4 mt-0.5 text-accent" />
-                <span className="text-primary-foreground/80">123 Wuye District, Abuja, Nigeria</span>
+          {/* Contact Info – Your real details */}
+          <div className="space-y-5">
+            <h3 className="text-lg font-semibold">Visit Us</h3>
+            <div className="space-y-4 text-sm">
+              <div className="flex items-start gap-3">
+                <MapPin className="h-5 w-5 text-accent mt-0.5 flex-shrink-0" />
+                <span className="text-primary-foreground/80">
+                  Holy Trinity Catholic Church,<br />
+                  Maitama, Abuja, Nigeria
+                </span>
               </div>
-              <div className="flex items-center space-x-2">
-                <Phone className="h-4 w-4 text-accent" />
-                <span className="text-primary-foreground/80">+234 803 123 4567</span>
+              <div className="flex items-center gap-3">
+                <Phone className="h-5 w-5 text-accent" />
+                <Link href="tel:+2347035118531" className="text-primary-foreground/80 hover:text-accent">
+                  0703 511 8531
+                </Link>
               </div>
-              <div className="flex items-center space-x-2">
-                <Mail className="h-4 w-4 text-accent" />
-                <span className="text-primary-foreground/80">info@hairvolution.ng</span>
+              <div className="flex items-center gap-3">
+                <Mail className="h-5 w-5 text-accent" />
+                <Link href="mailto:fidelisemma1470@gmail.com" className="text-primary-foreground/80 hover:text-accent">
+                  fidelisemma1470@gmail.com
+                </Link>
               </div>
-              <div className="flex items-start space-x-2">
-                <Clock className="h-4 w-4 mt-0.5 text-accent" />
+              <div className="flex items-start gap-3">
+                <Clock className="h-5 w-5 text-accent mt-0.5" />
                 <div className="text-primary-foreground/80">
-                  <div>Mon-Sat: 9:00 AM - 7:00 PM</div>
-                  <div>Sunday: 11:00 AM - 5:00 PM</div>
+                  <div>Mon–Sat: 9:00 AM – 7:00 PM</div>
+                  <div>Sunday: 11:00 AM – 5:00 PM</div>
                 </div>
               </div>
             </div>
           </div>
         </div>
 
-        <div className="border-t border-primary-foreground/20 mt-8 pt-8 text-center text-sm text-primary-foreground/60">
-          <p>&copy; 2024 Hairvolution. All rights reserved. | Designed with luxury in mind.</p>
+        {/* Bottom bar */}
+        <div className="border-t border-primary-foreground/20 mt-12 pt-8 text-center text-sm text-primary-foreground/60">
+          <p>
+            © {new Date().getFullYear()} Glamour Hub. All rights reserved /
+            Crafted with passion in Abuja
+          </p>
         </div>
       </div>
     </footer>

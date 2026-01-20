@@ -1,3 +1,4 @@
+// components/navigation.tsx
 "use client"
 
 import { useState } from "react"
@@ -22,10 +23,10 @@ export function Navigation() {
     <nav className="bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50 border-b border-border">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
-          {/* Logo */}
-          <Link href="/" className="flex items-center space-x-2">
-            <div className="text-2xl font-bold text-foreground">
-              Hair<span className="text-accent">volution</span>
+          {/* Logo – Glamour Hub */}
+          <Link href="/" className="flex items-center space-x-1">
+            <div className="text-2xl font-bold tracking-tight">
+              Glamour<span className="text-accent">Hub</span>
             </div>
           </Link>
 
@@ -42,18 +43,27 @@ export function Navigation() {
             ))}
           </div>
 
-          {/* Phone Number & Mobile Menu Button */}
+          {/* Phone Number (real) + Mobile Menu Button */}
           <div className="flex items-center space-x-4">
-            <div className="hidden sm:flex items-center space-x-2 text-sm text-muted-foreground">
-              <Phone className="h-4 w-4" />
-              <Link href="tel:+2348031234567" className="hover:text-accent transition-colors">
-                +234 803 123 4567
+            {/* Phone – Desktop */}
+            <div className="hidden sm:flex items-center space-x-2 text-sm font-medium text-foreground">
+              <Phone className="h-4 w-4 text-accent" />
+              <Link
+                href="tel:+2347035118531"
+                className="hover:text-accent transition-colors"
+              >
+                0703 511 8531
               </Link>
             </div>
 
-            {/* Mobile menu button */}
-            <Button variant="ghost" size="sm" className="md:hidden" onClick={() => setIsOpen(!isOpen)}>
-              {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            {/* Mobile Menu Toggle */}
+            <Button
+              variant="ghost"
+              size="sm"
+              className="md:hidden"
+              onClick={() => setIsOpen(!isOpen)}
+            >
+              {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
             </Button>
           </div>
         </div>
@@ -61,21 +71,21 @@ export function Navigation() {
         {/* Mobile Navigation */}
         {isOpen && (
           <div className="md:hidden">
-            <div className="px-2 pt-2 pb-3 space-y-1 bg-card border-t border-border">
+            <div className="px-2 pt-2 pb-4 space-y-1 bg-card border-t border-border">
               {navItems.map((item) => (
                 <Link
                   key={item.href}
                   href={item.href}
-                  className="block px-3 py-2 text-foreground hover:text-accent hover:bg-muted rounded-md transition-colors duration-200"
+                  className="block px-4 py-3 text-foreground hover:text-accent hover:bg-muted rounded-md transition-colors font-medium"
                   onClick={() => setIsOpen(false)}
                 >
                   {item.label}
                 </Link>
               ))}
-              <div className="px-3 py-2 text-sm text-muted-foreground flex items-center space-x-2">
-                <Phone className="h-4 w-4" />
-                <Link href="tel:+2348031234567" className="hover:text-accent transition-colors">
-                  +234 803 123 4567
+              <div className="px-4 py-3 text-sm font-medium flex items-center space-x-2 text-foreground">
+                <Phone className="h-4 w-4 text-accent" />
+                <Link href="tel:+2347035118531" className="hover:text-accent">
+                  0703 511 8531
                 </Link>
               </div>
             </div>

@@ -1,263 +1,149 @@
+// app/services/page.tsx
+"use client"  // ← THIS LINE WAS MISSING!
+
+import { useRouter } from "next/navigation"
 import { Navigation } from "@/components/navigation"
 import { Footer } from "@/components/footer"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Scissors, Palette, Sparkles, Heart, ShoppingBag, Calendar, Crown, Zap } from "lucide-react"
+import {
+  Scissors,
+  Palette,
+  Sparkles,
+  Heart,
+  Gem,
+  Crown,
+  Zap,
+  Phone,
+  Calendar,
+  Clock,
+} from "lucide-react"
 
 const serviceCategories = [
   {
-    category: "Hair Styling Services",
+    category: "Hair Styling",
     icon: Scissors,
     services: [
-      {
-        name: "Professional Hair Cut",
-        description: "Precision cuts tailored to your face shape and lifestyle",
-        price: "₦15,000 - ₦25,000",
-        duration: "45-60 mins",
-        popular: false,
-      },
-      {
-        name: "Blowout & Styling",
-        description: "Smooth, voluminous styling for any occasion",
-        price: "₦12,000 - ₦18,000",
-        duration: "30-45 mins",
-        popular: true,
-      },
-      {
-        name: "Hair Treatment & Deep Conditioning",
-        description: "Restorative treatments for damaged or dry hair",
-        price: "₦20,000 - ₦35,000",
-        duration: "60-90 mins",
-        popular: false,
-      },
-      {
-        name: "Keratin Treatment",
-        description: "Smoothing treatment for frizz-free, manageable hair",
-        price: "₦45,000 - ₦65,000",
-        duration: "2-3 hours",
-        popular: false,
-      },
+      { id: "hair-cut", name: "Precision Hair Cut", desc: "Custom cut to suit your face & style", price: "₦18,000", popular: true },
+      { id: "blowout", name: "Blowout & Styling", desc: "Voluminous, sleek or curly finish", price: "₦15,000", popular: true },
+      { id: "conditioning", name: "Deep Conditioning", desc: "Intensive repair for damaged hair", price: "₦25,000", popular: false },
+      { id: "keratin", name: "Keratin Treatment", desc: "Smooth, frizz-free hair for months", price: "₦80,000", popular: false },
     ],
   },
   {
-    category: "Hair Coloring & Highlights",
+    category: "Hair Coloring",
     icon: Palette,
     services: [
-      {
-        name: "Full Hair Coloring",
-        description: "Complete color transformation with premium products",
-        price: "₦30,000 - ₦50,000",
-        duration: "2-3 hours",
-        popular: true,
-      },
-      {
-        name: "Highlights & Lowlights",
-        description: "Dimensional color for natural-looking depth",
-        price: "₦25,000 - ₦40,000",
-        duration: "2-2.5 hours",
-        popular: false,
-      },
-      {
-        name: "Root Touch-Up",
-        description: "Maintain your color with professional root coverage",
-        price: "₦15,000 - ₦22,000",
-        duration: "60-90 mins",
-        popular: true,
-      },
-      {
-        name: "Color Correction",
-        description: "Expert correction for previous color mishaps",
-        price: "₦40,000 - ₦80,000",
-        duration: "3-5 hours",
-        popular: false,
-      },
+      { id: "full-color", name: "Full Color", desc: "Complete color change with premium dyes", price: "₦45,000", popular: true },
+      { id: "balayage", name: "Balayage/Highlights", desc: "Natural sun-kissed look", price: "₦55,000", popular: true },
+      { id: "root-touch", name: "Root Touch-Up", desc: "Seamless regrowth coverage", price: "₦20,000", popular: false },
+      { id: "fashion-color", name: "Fashion Color", desc: "Pink, purple, silver & more", price: "₦70,000", popular: false },
     ],
   },
   {
-    category: "Braiding & Protective Styles",
+    category: "Braids & Extensions",
     icon: Sparkles,
     services: [
-      {
-        name: "Box Braids",
-        description: "Classic protective style with premium synthetic or human hair",
-        price: "₦20,000 - ₦35,000",
-        duration: "3-5 hours",
-        popular: true,
-      },
-      {
-        name: "Cornrows & Feed-in Braids",
-        description: "Intricate braided patterns close to the scalp",
-        price: "₦15,000 - ₦25,000",
-        duration: "2-4 hours",
-        popular: true,
-      },
-      {
-        name: "Senegalese Twists",
-        description: "Elegant twisted protective style",
-        price: "₦22,000 - ₦32,000",
-        duration: "3-4 hours",
-        popular: false,
-      },
-      {
-        name: "Weave Installation",
-        description: "Professional sew-in or bonding with quality extensions",
-        price: "₦25,000 - ₦45,000",
-        duration: "2-4 hours",
-        popular: true,
-      },
+      { id: "box-braids", name: "Box Braids", desc: "Small to jumbo, waist or mid-back", price: "₦35,000", popular: true },
+      { id: "cornrows", name: "Cornrows", desc: "Neat, stylish scalp braids", price: "₦20,000", popular: true },
+      { id: "goddess-locs", name: "Goddess Locs", desc: "Lightweight boho locs", price: "₦45,000", popular: false },
+      { id: "weave", name: "Weave Install", desc: "Sew-in or glue-less installation", price: "₦40,000", popular: true },
     ],
   },
   {
-    category: "Spa & Wellness Treatments",
+    category: "Nails",
+    icon: Gem,
+    services: [
+      { id: "manicure", name: "Luxury Manicure", desc: "Shape, cuticle care + gel polish", price: "₦15,000", popular: true },
+      { id: "pedicure", name: "Spa Pedicure", desc: "Soak, scrub & polish", price: "₦18,000", popular: true },
+      { id: "nail-art", name: "Nail Art", desc: "Hand-painted designs", price: "₦8,000+", popular: false },
+      { id: "gel-x", name: "Gel-X Extensions", desc: "Long, strong & natural-looking", price: "₦35,000", popular: false },
+    ],
+  },
+  {
+    category: "Makeup & Facials",
     icon: Heart,
     services: [
-      {
-        name: "Signature Facial Treatment",
-        description: "Customized facial for your specific skin needs",
-        price: "₦18,000 - ₦28,000",
-        duration: "60-75 mins",
-        popular: true,
-      },
-      {
-        name: "Scalp Massage & Treatment",
-        description: "Relaxing scalp therapy for healthy hair growth",
-        price: "₦12,000 - ₦18,000",
-        duration: "30-45 mins",
-        popular: false,
-      },
-      {
-        name: "Hot Oil Treatment",
-        description: "Nourishing oil treatment for dry, damaged hair",
-        price: "₦8,000 - ₦15,000",
-        duration: "30-45 mins",
-        popular: true,
-      },
-      {
-        name: "Eyebrow Shaping & Tinting",
-        description: "Professional brow sculpting and coloring",
-        price: "₦5,000 - ₦8,000",
-        duration: "30-45 mins",
-        popular: false,
-      },
+      { id: "glam-makeup", name: "Full Glam Makeup", desc: "Flawless beat for events", price: "₦30,000", popular: true },
+      { id: "facial", name: "Signature Facial", desc: "Deep cleanse & glow treatment", price: "₦25,000", popular: true },
+      { id: "lash-lift", name: "Lash Lift + Tint", desc: "Wake up with perfect lashes", price: "₦20,000", popular: false },
+      { id: "bridal-makeup", name: "Bridal Makeup", desc: "Long-lasting wedding glam", price: "₦80,000", popular: true },
     ],
   },
   {
-    category: "Nail Services",
-    icon: ShoppingBag,
-    services: [
-      {
-        name: "Classic Manicure",
-        description: "Complete nail care with polish application",
-        price: "₦8,000 - ₦12,000",
-        duration: "45-60 mins",
-        popular: true,
-      },
-      {
-        name: "Gel Manicure",
-        description: "Long-lasting gel polish manicure",
-        price: "₦12,000 - ₦18,000",
-        duration: "60-75 mins",
-        popular: true,
-      },
-      {
-        name: "Pedicure",
-        description: "Relaxing foot care and nail treatment",
-        price: "₦10,000 - ₦15,000",
-        duration: "45-60 mins",
-        popular: false,
-      },
-      {
-        name: "Nail Art Design",
-        description: "Custom nail art and decorative designs",
-        price: "₦15,000 - ₦25,000",
-        duration: "60-90 mins",
-        popular: false,
-      },
-    ],
-  },
-  {
-    category: "Bridal & Special Occasion",
+    category: "Bridal & Special Events",
     icon: Crown,
     services: [
-      {
-        name: "Bridal Hair & Makeup Package",
-        description: "Complete bridal beauty for your special day",
-        price: "₦80,000 - ₦120,000",
-        duration: "3-4 hours",
-        popular: true,
-      },
-      {
-        name: "Bridal Trial Session",
-        description: "Practice session to perfect your bridal look",
-        price: "₦35,000 - ₦45,000",
-        duration: "2-3 hours",
-        popular: false,
-      },
-      {
-        name: "Special Event Styling",
-        description: "Glamorous styling for parties and events",
-        price: "₦25,000 - ₦40,000",
-        duration: "1.5-2 hours",
-        popular: true,
-      },
-      {
-        name: "Group Bridal Party Package",
-        description: "Styling for bride and bridal party (4+ people)",
-        price: "₦200,000 - ₦350,000",
-        duration: "4-6 hours",
-        popular: false,
-      },
+      { id: "bridal-package", name: "Complete Bridal Package", desc: "Hair + Makeup + Touch-ups", price: "₦100,000", popular: true },
+      { id: "bridal-trial", name: "Bridal Trial", desc: "Perfect your wedding look", price: "₦50,000", popular: false },
+      { id: "event-glam", name: "Event Glam", desc: "Red carpet ready", price: "₦30,000", popular: true },
+      { id: "group-styling", name: "Group Styling", desc: "Bride + bridesmaids", price: "₦120,000", popular: true },
     ],
   },
 ]
 
 export default function ServicesPage() {
+  const router = useRouter()
+
+  const handleBookService = (serviceName: string) => {
+    const encoded = encodeURIComponent(serviceName)
+    router.push(`/booking?service=${encoded}`)
+  }
+
   return (
     <main className="min-h-screen">
       <Navigation />
 
-      {/* Hero Section */}
-      <section className="relative py-20 bg-gradient-to-br from-muted/30 to-background">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h1 className="text-4xl sm:text-5xl font-bold text-foreground mb-6 text-balance">Our Premium Services</h1>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto text-pretty">
-              Comprehensive beauty solutions tailored to enhance your natural radiance
-            </p>
-            <div className="mt-8">
-              <Button size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90 mr-4">
-                <Calendar className="mr-2 h-5 w-5" />
-                Book Appointment
-              </Button>
-              <Button size="lg" variant="outline">
-                View Price List
-              </Button>
-            </div>
+      {/* Hero */}
+      <section className="relative bg-gradient-to-br from-accent/50 to-muted/50 py-25">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h1 className="text-5xl sm:text-6xl font-bold mb-6">Our Services</h1>
+          <p className="text-xl text-muted-foreground max-w-3xl mx-auto mb-10">
+            Premium beauty treatments crafted with care at Glamour Hub, Maitama
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Button
+              size="lg"
+              onClick={() => router.push("/booking")}
+              className="bg-accent hover:bg-accent/90 text-accent-foreground font-semibold"
+            >
+              <Calendar className="mr-2 h-5 w-5" />
+              Book Appointment
+            </Button>
+            <Button size="lg" variant="outline" asChild>
+              <a href="tel:+2347035118531">
+                <Phone className="mr-2 h-5 w-5" />
+                Call 0703 511 8531
+              </a>
+            </Button>
           </div>
         </div>
       </section>
 
-      {/* Services Categories */}
-      <section className="py-16">
+      {/* Services Grid */}
+      <section className="py-20 bg-background">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          {serviceCategories.map((category, categoryIndex) => {
-            const CategoryIcon = category.icon
+          {serviceCategories.map((cat, i) => {
+            const Icon = cat.icon
             return (
-              <div key={categoryIndex} className="mb-16">
-                <div className="flex items-center mb-8">
-                  <div className="bg-accent/10 rounded-full p-3 mr-4">
-                    <CategoryIcon className="h-6 w-6 text-accent" />
+              <div key={i} className="mb-20 last:mb-0">
+                <div className="flex items-center gap-4 mb-10">
+                  <div className="p-4 bg-accent/10 rounded-2xl">
+                    <Icon className="h-8 w-8 text-accent" />
                   </div>
-                  <h2 className="text-3xl font-bold text-foreground">{category.category}</h2>
+                  <h2 className="text-4xl font-bold text-foreground">{cat.category}</h2>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  {category.services.map((service, serviceIndex) => (
-                    <Card key={serviceIndex} className="hover:shadow-lg transition-all duration-300 group">
-                      <CardHeader className="pb-3">
-                        <div className="flex items-start justify-between">
-                          <CardTitle className="text-lg text-foreground group-hover:text-accent transition-colors">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  {cat.services.map((service) => (
+                    <Card
+                      key={service.id}
+                      className="group hover:shadow-2xl transition-all duration-300 border-0 bg-card/95 backdrop-blur"
+                    >
+                      <CardHeader>
+                        <div className="flex justify-between items-start">
+                          <CardTitle className="text-2xl group-hover:text-accent transition-colors">
                             {service.name}
                           </CardTitle>
                           {service.popular && (
@@ -268,15 +154,21 @@ export default function ServicesPage() {
                           )}
                         </div>
                       </CardHeader>
-                      <CardContent className="pt-0">
-                        <p className="text-muted-foreground text-sm mb-4">{service.description}</p>
-                        <div className="flex items-center justify-between">
+                      <CardContent>
+                        <p className="text-muted-foreground mb-6 text-base">{service.desc}</p>
+                        <div className="flex justify-between items-center">
                           <div>
-                            <div className="text-lg font-bold text-accent">{service.price}</div>
-                            <div className="text-xs text-muted-foreground">{service.duration}</div>
+                            <p className="text-3xl font-bold text-accent">{service.price}</p>
+                            <p className="text-sm text-muted-foreground flex items-center mt-1">
+                              <Clock className="h-4 w-4 mr-1" />
+                              Duration: 1 - 2 hrs
+                            </p>
                           </div>
-                          <Button size="sm" className="bg-primary text-primary-foreground hover:bg-primary/90">
-                            Book Now
+                          <Button
+                            onClick={() => handleBookService(service.name)}
+                            className="font-medium bg-accent hover:bg-accent/90"
+                          >
+                            Book This Service
                           </Button>
                         </div>
                       </CardContent>
@@ -289,26 +181,21 @@ export default function ServicesPage() {
         </div>
       </section>
 
-      {/* Call to Action */}
-      <section className="py-16 bg-primary text-primary-foreground">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl font-bold mb-4">Ready to Transform Your Look?</h2>
-          <p className="text-lg text-primary-foreground/80 mb-8">
-            Book your appointment today and experience the Hairvolution difference
+      {/* Final CTA */}
+      <section className="py-20 bg-primary text-primary-foreground">
+        <div className="max-w-4xl mx-auto text-center px-6">
+          <h2 className="text-4xl font-bold mb-6">Your Transformation Starts Here</h2>
+          <p className="text-xl opacity-90 mb-10">
+            One click away from your perfect look
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90">
-              <Calendar className="mr-2 h-5 w-5" />
-              Book Appointment
-            </Button>
-            <Button
-              size="lg"
-              variant="outline"
-              className="border-primary-foreground text-primary-foreground hover:bg-primary-foreground hover:text-primary bg-transparent"
-            >
-              Call Us: +234 803 123 4567
-            </Button>
-          </div>
+          <Button
+            size="lg"
+            onClick={() => router.push("/booking")}
+            className="bg-accent hover:bg-accent/90 text-accent-foreground text-lg px-12"
+          >
+            <Calendar className="mr-3 h-6 w-6" />
+            Book Your Appointment
+          </Button>
         </div>
       </section>
 

@@ -1,56 +1,25 @@
+// app/about/page.tsx
 import { Navigation } from "@/components/navigation"
 import { Footer } from "@/components/footer"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
-import { Award, Heart, Star, Calendar } from "lucide-react"
+import { Award, Heart, Star, Calendar, Sparkles } from "lucide-react"
 
 const values = [
   {
     icon: Award,
-    title: "Professionalism",
-    description: "We maintain the highest standards of service excellence and technical expertise in every treatment.",
+    title: "Excellence",
+    description: "We deliver the highest standards of skill, hygiene, and professionalism in every service.",
   },
   {
     icon: Heart,
-    title: "Customer Care",
-    description:
-      "Your comfort and satisfaction are our top priorities. We listen, understand, and deliver beyond expectations.",
+    title: "Personalized Care",
+    description: "Every client is unique. We listen, understand, and tailor every experience just for you.",
   },
   {
-    icon: Star,
-    title: "Style Innovation",
-    description: "We stay ahead of beauty trends while honoring timeless elegance to create your perfect look.",
-  },
-]
-
-const teamMembers = [
-  {
-    name: "Adunni Okafor",
-    role: "Founder & Master Stylist",
-    experience: "15+ years",
-    specialties: "Hair coloring, Bridal styling",
-    image: "/professional-female-hair-stylist-portrait.png",
-  },
-  {
-    name: "Kemi Adebayo",
-    role: "Senior Braiding Specialist",
-    experience: "12+ years",
-    specialties: "Traditional & modern braiding",
-    image: "/professional-braiding-specialist-portrait.png",
-  },
-  {
-    name: "Fatima Hassan",
-    role: "Spa & Wellness Expert",
-    experience: "8+ years",
-    specialties: "Facials, Scalp treatments",
-    image: "/professional-spa-therapist-portrait.png",
-  },
-  {
-    name: "Grace Emeka",
-    role: "Nail Art Specialist",
-    experience: "6+ years",
-    specialties: "Nail art, Manicures, Pedicures",
-    image: "/professional-nail-technician-portrait.png",
+    icon: Sparkles,
+    title: "Innovation & Quality",
+    description: "We combine the latest beauty trends with premium products to give you flawless, long-lasting results.",
   },
 ]
 
@@ -59,85 +28,103 @@ export default function AboutPage() {
     <main className="min-h-screen">
       <Navigation />
 
-      {/* Hero Section */}
-      <section className="relative py-20 bg-gradient-to-br from-muted/30 to-background">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h1 className="text-4xl sm:text-5xl font-bold text-foreground mb-6 text-balance">
-              About Hair<span className="text-accent">volution</span>
-            </h1>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto text-pretty">
-              Where beauty meets excellence in the heart of Abuja
+      {/* Hero */}
+      <section className="relative bg-gradient-to-br from-accent/50 to-muted/50 py-40">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h1 className="text-5xl sm:text-6xl font-bold text-foreground mb-6">
+            About Glamour<span className="text-accent">Hub</span>
+          </h1>
+          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+            Your premium beauty studio & online shop in the heart of Maitama, Abuja
+          </p>
+        </div>
+      </section>
+
+{/* Our Story + Image Card Section – FIXED & WORKING */}
+<section className="py-20 bg-background">
+  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="grid lg:grid-cols-2 gap-12 items-start">
+
+      {/* Left: Story Text */}
+      <div className="space-y-6">
+        <h2 className="text-4xl font-bold text-foreground">Our Journey</h2>
+        <div className="space-y-5 text-muted-foreground text-lg leading-relaxed">
+          <p>
+            Glamour Hub was born from a passion to create a luxury beauty experience that combines world-class services
+            with carefully curated products — all under one roof.
+          </p>
+          <p>
+            Located at Holy Trinity Catholic Church in Maitama, Abuja, we’ve grown from a boutique salon into a
+            trusted name for hair, makeup, nails, spa treatments, and premium beauty products with nationwide delivery.
+          </p>
+          <p>
+            Thousands of happy clients later, we remain committed to one thing: helping you look and feel your absolute best.
+          </p>
+        </div>
+        <div className="mt-8">
+          <Button size="lg" asChild>
+            <a href="/booking">
+              <Calendar className="mr-2 h-5 w-5" />
+              Book Your Appointment
+            </a>
+          </Button>
+        </div>
+      </div>
+
+      {/* Right: Image Card – NOW WORKING 100% */}
+      <div className="relative group">
+        <div className="relative overflow-hidden rounded-2xl shadow-2xl aspect-[4/5] lg:aspect-auto">
+          {/* THIS IS THE CORRECT WAY */}
+          <img
+            src="/glamour-hub-interior.jpg"
+            alt="Inside Glamour Hub – Luxury Beauty Studio in Maitama, Abuja"
+            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+          />
+
+          {/* Gradient Overlay */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent pointer-events-none" />
+
+          {/* Caption */}
+          <div className="absolute bottom-0 left-0 right-0 p-8 text-white">
+            <h3 className="text-2xl font-bold mb-2">Welcome to Glamour Hub</h3>
+            <p className="text-sm opacity-90">
+              A sanctuary of beauty, style, and self-care in the heart of Abuja
             </p>
           </div>
         </div>
-      </section>
 
-      {/* Our Story */}
-      <section className="py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div>
-              <h2 className="text-3xl font-bold text-foreground mb-6">Our Story</h2>
-              <div className="space-y-4 text-muted-foreground">
-                <p>
-                  Founded in 2018 in the vibrant Wuye district of Abuja, Hairvolution began as a dream to create a
-                  sanctuary where beauty, wellness, and exceptional service converge. Our founder, Adunni Okafor,
-                  envisioned a space that would redefine the salon experience in Nigeria's capital.
-                </p>
-                <p>
-                  What started as a small boutique salon has grown into Abuja's premier beauty destination, serving over
-                  2,000 satisfied clients. We've built our reputation on unwavering commitment to quality, continuous
-                  education, and genuine care for each person who walks through our doors.
-                </p>
-                <p>
-                  Today, Hairvolution stands as a testament to the power of passion, professionalism, and the belief
-                  that every individual deserves to feel beautiful, confident, and pampered.
-                </p>
-              </div>
-              <div className="mt-8">
-                <Button size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90">
-                  <Calendar className="mr-2 h-5 w-5" />
-                  Book Your Experience
-                </Button>
-              </div>
-            </div>
-            <div className="relative">
-              <img
-                src="/hairvolution-salon-founder-and-team.png"
-                alt="Hairvolution Salon Team"
-                className="rounded-lg shadow-lg w-full"
-              />
-              <div className="absolute -bottom-6 -right-6 bg-accent text-accent-foreground rounded-lg p-4 shadow-lg">
-                <div className="text-2xl font-bold">2000+</div>
-                <div className="text-sm">Happy Clients</div>
-              </div>
-            </div>
-          </div>
+        {/* Floating Stat Badge */}
+        <div className="absolute -top-6 -right-6 bg-accent text-accent-foreground rounded-full p-5 shadow-xl z-10">
+          <div className="text-3xl font-bold">2K+</div>
+          <div className="text-xs opacity-90">Happy Clients</div>
         </div>
-      </section>
+      </div>
 
-      {/* Our Values */}
-      <section className="py-16 bg-muted/30">
+    </div>
+  </div>
+</section>
+
+      {/* Core Values */}
+      <section className="py-20 bg-muted/30">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-foreground mb-4">Our Core Values</h2>
+            <h2 className="text-4xl font-bold mb-4">Our Core Values</h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              The principles that guide everything we do at Hairvolution
+              The principles that define every experience at Glamour Hub
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {values.map((value, index) => {
+          <div className="grid md:grid-cols-3 gap-8">
+            {values.map((value, i) => {
               const Icon = value.icon
               return (
-                <Card key={index} className="text-center hover:shadow-lg transition-shadow duration-300">
-                  <CardContent className="p-8">
-                    <div className="bg-accent/10 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
-                      <Icon className="h-8 w-8 text-accent" />
+                <Card key={i} className="hover:shadow-xl transition-shadow duration-300 border-0">
+                  <CardContent className="p-8 text-center">
+                    <div className="w-20 h-20 bg-accent/10 rounded-full flex items-center justify-center mx-auto mb-6">
+                      <Icon className="h-10 w-10 text-accent" />
                     </div>
-                    <h3 className="text-xl font-semibold text-foreground mb-3">{value.title}</h3>
-                    <p className="text-muted-foreground text-sm">{value.description}</p>
+                    <h3 className="text-2xl font-semibold mb-3">{value.title}</h3>
+                    <p className="text-muted-foreground">{value.description}</p>
                   </CardContent>
                 </Card>
               )
@@ -146,33 +133,33 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Meet Our Team */}
-      <section className="py-16">
+      {/* Team – Generic (no real names/photos for portfolio safety) */}
+      <section className="py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-foreground mb-4">Meet Our Expert Team</h2>
+          <div className="text-center mb-12-moving">
+            <h2 className="text-4xl font-bold mb-4">Our Expert Team</h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Skilled professionals dedicated to bringing out your natural beauty
+              Passionate, certified professionals dedicated to your beauty
             </p>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-            {teamMembers.map((member, index) => (
-              <Card key={index} className="overflow-hidden hover:shadow-lg transition-shadow duration-300">
-                <div className="relative h-64">
-                  <img
-                    src={member.image || "/placeholder.svg"}
-                    alt={member.name}
-                    className="w-full h-full object-cover"
-                  />
-                  <div className="absolute top-4 right-4 bg-accent text-accent-foreground rounded-full px-2 py-1 text-xs font-semibold">
-                    {member.experience}
+            {[
+              { role: "Master Stylist", exp: "4+ years", spec: "Color & Extensions" },
+              { role: "Makeup Artist", exp: "3+ years", spec: "Bridal & Editorial" },
+              { role: "Nail Technician", exp: "7+ years", spec: "Gel & Nail Art" },
+              { role: "Spa Therapist", exp: "2+ years", spec: "Facials & Massage" },
+            ].map((member, i) => (
+              <Card key={i} className="overflow-hidden hover:shadow-xl transition-shadow">
+                <div className="h-80 bg-gradient-to-br from-accent/20 to-muted relative">
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="bg-accent/10 border-2 border-dashed border-accent rounded-full w-32 h-32" />
                   </div>
                 </div>
-                <CardContent className="p-4">
-                  <h3 className="text-lg font-semibold text-foreground mb-1">{member.name}</h3>
-                  <p className="text-accent font-medium text-sm mb-2">{member.role}</p>
-                  <p className="text-muted-foreground text-xs">{member.specialties}</p>
+                <CardContent className="pt-6 text-center">
+                  <h3 className="text-xl font-semibold">{member.role}</h3>
+                  <p className="text-accent text-sm font-medium mt-1">{member.exp}</p>
+                  <p className="text-sm text-muted-foreground mt-2">{member.spec}</p>
                 </CardContent>
               </Card>
             ))}

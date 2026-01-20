@@ -8,13 +8,13 @@ export function WhatsAppWidget() {
   const [isOpen, setIsOpen] = useState(false)
 
   const handleWhatsAppClick = () => {
-    const message = "Hello! I'd like to inquire about your services at Hairvolution."
-    const whatsappUrl = `https://wa.me/2348031234567?text=${encodeURIComponent(message)}`
+    const message = "Hello! I'd like to inquire about your services at Glamour Hub."
+    const whatsappUrl = `https://wa.me/2347035118531?text=${encodeURIComponent(message)}`
     window.open(whatsappUrl, "_blank")
   }
 
   return (
-    <div className="fixed bottom-6 right-6 z-50">
+    <div id="whatsapp-widget" className="fixed bottom-6 right-6 z-50">
       {isOpen && (
         <div className="mb-4 bg-white rounded-lg shadow-lg border border-border p-4 max-w-xs animate-in slide-in-from-bottom-2">
           <div className="flex items-center justify-between mb-2">

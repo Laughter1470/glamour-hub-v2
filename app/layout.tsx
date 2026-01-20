@@ -6,43 +6,43 @@ import { WhatsAppWidget } from "@/components/whatsapp-widget"
 import "./globals.css"
 
 export const metadata: Metadata = {
-  title: "Hairvolution - Redefining Beauty in Abuja | Premium Beauty Salon",
+  title: "Glamour Hub – Premium Beauty Studio & Shop in Abuja",
   description:
-    "Premium beauty salon in Wuye, Abuja offering professional hair styling, braiding, coloring, spa treatments, and beauty products. Book your appointment today!",
+    "Your one-stop beauty destination in Maitama, Abuja. Professional hair, makeup, nails, spa treatments, and curated beauty products. Book your appointment or shop online today!",
   keywords: [
     "beauty salon Abuja",
-    "hair styling Wuye",
-    "braiding salon Nigeria",
-    "hair coloring Abuja",
+    "hair styling Maitama",
+    "makeup artist Abuja",
+    "nails Abuja",
     "spa treatments",
-    "bridal hair makeup",
+    "bridal makeup Abuja",
     "beauty products Nigeria",
-    "professional hairstylist",
+    "Glamour Hub Abuja",
   ],
-  authors: [{ name: "Hairvolution Salon" }],
-  creator: "Hairvolution",
-  publisher: "Hairvolution",
+  authors: [{ name: "Glamour Hub" }],
+  creator: "Glamour Hub",
+  publisher: "Glamour Hub",
   formatDetection: {
     email: false,
     address: false,
     telephone: false,
   },
-  metadataBase: new URL("https://hairvolution.ng"),
+  metadataBase: new URL("https://glamourhub.ng"), // you can change this later when you buy the domain
   alternates: {
     canonical: "/",
   },
   openGraph: {
-    title: "Hairvolution - Redefining Beauty in Abuja",
+    title: "Glamour Hub – Premium Beauty Studio & Shop in Abuja",
     description:
-      "Premium beauty salon in Wuye, Abuja offering professional hair styling, braiding, coloring, spa treatments, and beauty products.",
-    url: "https://hairvolution.ng",
-    siteName: "Hairvolution",
+      "Professional beauty services and curated products in Maitama, Abuja. Hair | Makeup | Nails | Spa | Shop online with nationwide delivery.",
+    url: "https://glamourhub.ng",
+    siteName: "Glamour Hub",
     images: [
       {
-        url: "/luxury-beauty-salon-interior-with-elegant-styling-.png",
+        url: "/og-image.jpg", // we'll add a nice OG image later in /public
         width: 1200,
         height: 630,
-        alt: "Hairvolution Salon Interior",
+        alt: "Glamour Hub – Premium Beauty Studio Abuja",
       },
     ],
     locale: "en_NG",
@@ -50,10 +50,10 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Hairvolution - Redefining Beauty in Abuja",
+    title: "Glamour Hub – Premium Beauty Studio & Shop in Abuja",
     description:
-      "Premium beauty salon in Wuye, Abuja offering professional hair styling, braiding, coloring, spa treatments, and beauty products.",
-    images: ["/luxury-beauty-salon-interior-with-elegant-styling-.png"],
+      "Hair, makeup, nails, spa & beauty products in Maitama, Abuja with nationwide delivery.",
+    images: ["/og-image.jpg"],
   },
   robots: {
     index: true,
@@ -66,7 +66,6 @@ export const metadata: Metadata = {
       "max-snippet": -1,
     },
   },
-  generator: "v0.app",
 }
 
 export default function RootLayout({
@@ -78,7 +77,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={`font-sans ${GeistSans.variable} ${GeistMono.variable}`}>
         {children}
-        <WhatsAppWidget />
+        <WhatsAppWidget phone="2347035118531" /> {/* Your number without the leading 0 */}
       </body>
     </html>
   )

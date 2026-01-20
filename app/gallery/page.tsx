@@ -1,284 +1,120 @@
+// app/gallery/page.tsx
 "use client"
 
 import { useState } from "react"
+import Image from 'next/image'
+import { useRouter } from "next/navigation"
+import { toast } from '@/hooks/use-toast'
 import { Navigation } from "@/components/navigation"
 import { Footer } from "@/components/footer"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog"
-import { Calendar, Filter, Heart, Share2 } from "lucide-react"
+import { Calendar, Filter, Heart, Share2, MapPin } from "lucide-react"
 
-const galleryCategories = [
-  { id: "all", label: "All Work", count: 24 },
-  { id: "hair-styling", label: "Hair Styling", count: 8 },
-  { id: "braiding", label: "Braiding", count: 6 },
-  { id: "coloring", label: "Hair Coloring", count: 5 },
-  { id: "bridal", label: "Bridal", count: 3 },
-  { id: "salon", label: "Salon Interior", count: 2 },
+const categories = [
+  { id: "all", label: "All Work", count: 28 },
+  { id: "hair", label: "Hair Styling", count: 9 },
+  { id: "braids", label: "Braids & Locs", count: 7 },
+  { id: "color", label: "Hair Color", count: 6 },
+  { id: "makeup", label: "Makeup", count: 4 },
+  { id: "bridal", label: "Bridal", count: 4 },
+  { id: "interior", label: "Salon Interior", count: 2 },
 ]
 
-const galleryItems = [
-  {
-    id: 1,
-    category: "hair-styling",
-    title: "Elegant Bob Cut",
-    description: "Modern bob with subtle layers for volume and movement",
-    image: "/gallery-elegant-bob-cut-styling.png",
-    beforeAfter: false,
-    featured: true,
-  },
-  {
-    id: 2,
-    category: "braiding",
-    title: "Intricate Box Braids",
-    description: "Long box braids with premium synthetic hair",
-    image: "/gallery-box-braids-hairstyle.png",
-    beforeAfter: false,
-    featured: false,
-  },
-  {
-    id: 3,
-    category: "coloring",
-    title: "Honey Blonde Highlights",
-    description: "Beautiful honey blonde highlights on natural hair",
-    image: "/gallery-honey-blonde-highlights.png",
-    beforeAfter: true,
-    featured: true,
-  },
-  {
-    id: 4,
-    category: "bridal",
-    title: "Bridal Updo Perfection",
-    description: "Elegant bridal updo with delicate accessories",
-    image: "/gallery-bridal-updo-hairstyle.png",
-    beforeAfter: false,
-    featured: true,
-  },
-  {
-    id: 5,
-    category: "hair-styling",
-    title: "Voluminous Curls",
-    description: "Bouncy curls with professional styling techniques",
-    image: "/gallery-voluminous-curls-styling.png",
-    beforeAfter: false,
-    featured: false,
-  },
-  {
-    id: 6,
-    category: "braiding",
-    title: "Feed-in Cornrows",
-    description: "Precise feed-in cornrows with geometric patterns",
-    image: "/gallery-feed-in-cornrows.png",
-    beforeAfter: false,
-    featured: false,
-  },
-  {
-    id: 7,
-    category: "coloring",
-    title: "Ombre Color Transformation",
-    description: "Stunning ombre from dark roots to light ends",
-    image: "/gallery-ombre-color-transformation.png",
-    beforeAfter: true,
-    featured: false,
-  },
-  {
-    id: 8,
-    category: "hair-styling",
-    title: "Sleek Straight Style",
-    description: "Pin-straight hair with mirror-like shine",
-    image: "/gallery-sleek-straight-hairstyle.png",
-    beforeAfter: false,
-    featured: false,
-  },
-  {
-    id: 9,
-    category: "braiding",
-    title: "Senegalese Twists",
-    description: "Protective Senegalese twists with natural-looking texture",
-    image: "/gallery-senegalese-twists.png",
-    beforeAfter: false,
-    featured: false,
-  },
-  {
-    id: 10,
-    category: "coloring",
-    title: "Platinum Blonde Transformation",
-    description: "Complete color transformation to platinum blonde",
-    image: "/gallery-platinum-blonde-transformation.png",
-    beforeAfter: true,
-    featured: true,
-  },
-  {
-    id: 11,
-    category: "bridal",
-    title: "Romantic Bridal Waves",
-    description: "Soft romantic waves perfect for wedding day",
-    image: "/gallery-romantic-bridal-waves.png",
-    beforeAfter: false,
-    featured: false,
-  },
-  {
-    id: 12,
-    category: "salon",
-    title: "Luxury Salon Interior",
-    description: "Our elegant styling stations and comfortable atmosphere",
-    image: "/gallery-salon-interior-styling-stations.png",
-    beforeAfter: false,
-    featured: false,
-  },
-  {
-    id: 13,
-    category: "hair-styling",
-    title: "Textured Pixie Cut",
-    description: "Edgy pixie cut with textured layers",
-    image: "/gallery-textured-pixie-cut.png",
-    beforeAfter: false,
-    featured: false,
-  },
-  {
-    id: 14,
-    category: "braiding",
-    title: "Goddess Braids",
-    description: "Thick goddess braids with intricate patterns",
-    image: "/gallery-goddess-braids-hairstyle.png",
-    beforeAfter: false,
-    featured: false,
-  },
-  {
-    id: 15,
-    category: "coloring",
-    title: "Balayage Highlights",
-    description: "Natural-looking balayage highlights",
-    image: "/gallery-balayage-highlights.png",
-    beforeAfter: true,
-    featured: false,
-  },
-  {
-    id: 16,
-    category: "hair-styling",
-    title: "Beach Waves",
-    description: "Effortless beach waves with natural texture",
-    image: "/gallery-beach-waves-hairstyle.png",
-    beforeAfter: false,
-    featured: false,
-  },
-  {
-    id: 17,
-    category: "braiding",
-    title: "Dutch Braids",
-    description: "Classic Dutch braids with modern styling",
-    image: "/gallery-dutch-braids-hairstyle.png",
-    beforeAfter: false,
-    featured: false,
-  },
-  {
-    id: 18,
-    category: "bridal",
-    title: "Bridal Hair Accessories",
-    description: "Elegant bridal styling with pearl accessories",
-    image: "/gallery-bridal-hair-accessories.png",
-    beforeAfter: false,
-    featured: false,
-  },
-  {
-    id: 19,
-    category: "hair-styling",
-    title: "Layered Long Hair",
-    description: "Long layered cut with face-framing highlights",
-    image: "/gallery-layered-long-hairstyle.png",
-    beforeAfter: false,
-    featured: false,
-  },
-  {
-    id: 20,
-    category: "coloring",
-    title: "Red Color Transformation",
-    description: "Vibrant red color with professional application",
-    image: "/gallery-red-color-transformation.png",
-    beforeAfter: true,
-    featured: false,
-  },
-  {
-    id: 21,
-    category: "braiding",
-    title: "Fulani Braids",
-    description: "Traditional Fulani braids with beads and accessories",
-    image: "/gallery-fulani-braids-hairstyle.png",
-    beforeAfter: false,
-    featured: false,
-  },
-  {
-    id: 22,
-    category: "hair-styling",
-    title: "Vintage Hollywood Waves",
-    description: "Classic Hollywood glamour waves",
-    image: "/gallery-hollywood-waves-styling.png",
-    beforeAfter: false,
-    featured: false,
-  },
-  {
-    id: 23,
-    category: "hair-styling",
-    title: "Modern Shag Cut",
-    description: "Contemporary shag with feathered layers",
-    image: "/gallery-modern-shag-hairstyle.png",
-    beforeAfter: false,
-    featured: false,
-  },
-  {
-    id: 24,
-    category: "salon",
-    title: "Relaxation Area",
-    description: "Comfortable waiting area with luxury amenities",
-    image: "/gallery-salon-relaxation-area.png",
-    beforeAfter: false,
-    featured: false,
-  },
+const photos = [
+  { id: 1, cat: "hair", title: "Sleek Silk Press", desc: "Mirror-shine finish on natural hair.", featured: true },
+  { id: 2, cat: "braids", title: "Jumbo Knotless Braids", desc: "Lightweight & scalp-friendly", featured: true },
+  { id: 3, cat: "color", title: "Caramel Balayage", desc: "Sun-kissed glow", featured: true },
+  { id: 4, cat: "bridal", title: "Soft Bridal Waves", desc: "Romantic wedding look", featured: true },
+  { id: 5, cat: "hair", title: "Voluminous Curls", desc: "Bouncy & defined", featured: false },
+  { id: 6, cat: "braids", title: "Fulani Braids with Beads", desc: "Cultural elegance", featured: false },
+  { id: 7, cat: "color", title: "Platinum Blonde", desc: "Full transformation", featured: true },
+  { id: 8, cat: "makeup", title: "Soft Glam Beat", desc: "Natural yet stunning", featured: true },
+  { id: 9, cat: "hair", title: "Precision Bob Cut", desc: "Sharp & modern", featured: false },
+  { id: 10, cat: "braids", title: "Goddess Locs", desc: "Boho chic vibes", featured: true },
+  { id: 11, cat: "color", title: "Cherry Red Ombré", desc: "Bold & beautiful", featured: false },
+  { id: 12, cat: "interior", title: "Luxury Reception", desc: "Welcome to Glamour Hub", featured: true },
+  { id: 13, cat: "hair", title: "Textured Pixie", desc: "Edgy & effortless", featured: false },
+  { id: 14, cat: "braids", title: "Cornrows with Extensions", desc: "Sleek ponytail", featured: false },
+  { id: 15, cat: "makeup", title: "Editorial Glam", desc: "Magazine-ready look", featured: false },
+  { id: 16, cat: "bridal", title: "Classic Bridal Updo", desc: "Timeless elegance", featured: false },
+  { id: 17, cat: "hair", title: "Beach Waves", desc: "Vacation-ready hair", featured: false },
+  { id: 18, cat: "color", title: "Chocolate Brown Melt", desc: "Rich & glossy", featured: false },
+  { id: 19, cat: "braids", title: "Box Braids with Curls", desc: "Half-up style", featured: false },
+  { id: 20, cat: "makeup", title: "Bridal Makeup Trial", desc: "Soft & glowing", featured: false },
+  { id: 21, cat: "hair", title: "Layered Long Cut", desc: "Face-framing layers", featured: false },
+  { id: 22, cat: "color", title: "Honey Blonde Highlights", desc: "Natural dimension", featured: false },
+  { id: 23, cat: "bridal", title: "Princess Bridal Crown", desc: "Royal treatment", featured: true },
+  { id: 24, cat: "interior", title: "Styling Stations", desc: "Modern luxury setup", featured: false },
+  { id: 25, cat: "braids", title: "Stitch Braids", desc: "Clean & neat", featured: false },
+  { id: 26, cat: "makeup", title: "Cut Crease Glam", desc: "Sharp & dramatic", featured: false },
+  { id: 27, cat: "hair", title: "Hollywood Waves", desc: "Red carpet ready", featured: true },
+  { id: 28, cat: "bridal", title: "Veiled Beauty", desc: "Complete bridal look", featured: false },
 ]
 
 export default function GalleryPage() {
-  const [activeCategory, setActiveCategory] = useState("all")
-  const [selectedImage, setSelectedImage] = useState<(typeof galleryItems)[0] | null>(null)
+  const [filter, setFilter] = useState("all")
+  const [selected, setSelected] = useState<typeof photos[0] | null>(null)
+  const router = useRouter()
 
-  const filteredItems = galleryItems.filter((item) => activeCategory === "all" || item.category === activeCategory)
+  async function handleShare(item: typeof photos[0]) {
+    try {
+      const shareUrl = typeof window !== "undefined" ? `${window.location.origin}/gallery?item=${item.id}` : `/gallery?item=${item.id}`
+      if (navigator.share) {
+        await navigator.share({ title: item.title, text: item.desc, url: shareUrl })
+      } else if (navigator.clipboard) {
+        await navigator.clipboard.writeText(shareUrl)
+        // lightweight feedback using app toast
+        toast({ title: 'Link copied', description: 'Gallery link copied to clipboard' })
+      } else {
+        // final fallback
+        window.prompt("Copy this link", shareUrl)
+      }
+    } catch (err) {
+      console.error("Share failed:", err)
+    }
+  }
+
+  const filtered = filter === "all" ? photos : photos.filter(p => p.cat === filter)
 
   return (
-    <main className="min-h-screen">
+    <main className="min-h-screen bg-background">
       <Navigation />
 
-      {/* Hero Section */}
-      <section className="relative py-20 bg-gradient-to-br from-muted/30 to-background">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h1 className="text-4xl sm:text-5xl font-bold text-foreground mb-6 text-balance">
-              Our Work <span className="text-accent">Portfolio</span>
-            </h1>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto text-pretty">
-              Discover the artistry and expertise behind every transformation at Hairvolution
-            </p>
+      {/* Hero */}
+      <section className="relative bg-gradient-to-br from-accent/50 to-muted/50 py-24 text-center">
+        <div className="max-w-7xl mx-auto px-6">
+          <h1 className="text-5xl sm:text-6xl font-bold mb-6">
+            Our <span className="text-accent">Gallery</span>
+          </h1>
+          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+            Real clients. Real transformations. Real glamour — at Glamour Hub, Maitama
+          </p>
+          <div className="flex justify-center mt-4">
+            <Badge variant="secondary" className="text-sm px-4 py-2">
+              <MapPin className="h-4 w-4 mr-1" />
+              Holy Trinity Church, Maitama, Abuja
+            </Badge>
           </div>
         </div>
       </section>
 
-      {/* Category Filter */}
-      <section className="py-8 bg-card border-b border-border">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-wrap gap-2 justify-center">
-            {galleryCategories.map((category) => (
+      {/* Filters */}
+      <section className="py-8 bg-card border-b">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="flex flex-wrap gap-3 justify-center">
+            {categories.map(cat => (
               <Button
-                key={category.id}
-                variant={activeCategory === category.id ? "default" : "outline"}
+                key={cat.id}
+                variant={filter === cat.id ? "default" : "outline"}
                 size="sm"
-                onClick={() => setActiveCategory(category.id)}
-                className={
-                  activeCategory === category.id
-                    ? "bg-accent text-accent-foreground hover:bg-accent/90"
-                    : "hover:bg-accent/10 hover:text-accent"
-                }
+                onClick={() => setFilter(cat.id)}
+                className={filter === cat.id ? "bg-accent hover:bg-accent/90" : ""}
               >
-                <Filter className="mr-2 h-4 w-4" />
-                {category.label} ({category.count})
+                <Filter className="h-4 w-4 mr-2" />
+                {cat.label} ({cat.count})
               </Button>
             ))}
           </div>
@@ -286,81 +122,82 @@ export default function GalleryPage() {
       </section>
 
       {/* Gallery Grid */}
-      <section className="py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {filteredItems.map((item) => (
+      <section className="py-16 px-6">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+            {filtered.map(item => (
               <Dialog key={item.id}>
                 <DialogTrigger asChild>
-                  <Card className="group cursor-pointer overflow-hidden hover:shadow-lg transition-all duration-300">
-                    <div className="relative aspect-square overflow-hidden">
-                      <img
-                        src={item.image || "/placeholder.svg"}
+                  <Card className="overflow-hidden cursor-pointer group hover:shadow-2xl transition-all duration-300">
+                    <div className="aspect-square relative">
+                      <Image
+                        src={`/gallery/${item.id}.jpg`}
                         alt={item.title}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                        fill
+                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 33vw, 25vw"
+                        loading="lazy"
+                        quality={75}
+                        className="object-cover group-hover:scale-110 transition-transform duration-500"
                       />
-                      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300" />
+                      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-colors" />
+                      
+                      {item.featured && (
+                        <Badge className="absolute top-3 left-3 bg-accent text-accent-foreground">
+                          <Heart className="h-3 w-3 mr-1" fill="currentColor" />
+                          Featured
+                        </Badge>
+                      )}
 
-                      {/* Badges */}
-                      <div className="absolute top-3 left-3 flex gap-2">
-                        {item.featured && (
-                          <Badge className="bg-accent text-accent-foreground">
-                            <Heart className="h-3 w-3 mr-1" />
-                            Featured
-                          </Badge>
-                        )}
-                        {item.beforeAfter && (
-                          <Badge variant="secondary" className="bg-primary text-primary-foreground">
-                            Before/After
-                          </Badge>
-                        )}
-                      </div>
-
-                      {/* Overlay Content */}
-                      <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                        <h3 className="text-white font-semibold text-sm mb-1">{item.title}</h3>
-                        <p className="text-white/80 text-xs">{item.description}</p>
+                      <div className="absolute bottom-0 left-0 right-0 p-4 text-white translate-y-8 group-hover:translate-y-0 transition-transform opacity-0 group-hover:opacity-100">
+                        <h3 className="font-semibold">{item.title}</h3>
+                        <p className="text-xs opacity-90">{item.desc}</p>
                       </div>
                     </div>
                   </Card>
                 </DialogTrigger>
 
-                <DialogContent className="max-w-4xl max-h-[90vh] p-0">
-                  <div className="relative">
-                    <img
-                      src={item.image || "/placeholder.svg"}
-                      alt={item.title}
-                      className="w-full h-auto max-h-[70vh] object-contain"
-                    />
-                    <div className="p-6">
-                      <div className="flex items-start justify-between mb-4">
-                        <div>
-                          <h2 className="text-2xl font-bold text-foreground mb-2">{item.title}</h2>
-                          <p className="text-muted-foreground">{item.description}</p>
-                        </div>
-                        <div className="flex gap-2">
-                          {item.featured && (
-                            <Badge className="bg-accent text-accent-foreground">
-                              <Heart className="h-3 w-3 mr-1" />
-                              Featured
-                            </Badge>
-                          )}
-                          {item.beforeAfter && (
-                            <Badge variant="secondary" className="bg-primary text-primary-foreground">
-                              Before/After
-                            </Badge>
-                          )}
-                        </div>
+                <DialogContent className="max-w-5xl p-0 bg-background">
+                  <div className="flex flex-col md:flex-row">
+                    <div className="md:w-1/2 flex items-center justify-center bg-black/5">
+                      <div className="relative w-full h-[80vh] max-h-[80vh]">
+                        <Image
+                          src={`/gallery/${item.id}.jpg`}
+                          alt={item.title}
+                          fill
+                          sizes="(max-width: 768px) 100vw, 50vw"
+                          loading="eager"
+                          priority
+                          quality={90}
+                          className="object-contain"
+                        />
                       </div>
-                      <div className="flex gap-4">
-                        <Button className="bg-accent text-accent-foreground hover:bg-accent/90">
-                          <Calendar className="mr-2 h-4 w-4" />
-                          Book Similar Style
-                        </Button>
-                        <Button variant="outline">
-                          <Share2 className="mr-2 h-4 w-4" />
-                          Share
-                        </Button>
+                    </div>
+                    <div className="md:w-1/2 p-6 md:p-8 flex flex-col justify-between relative">
+                      {item.featured && (
+                        <div className="absolute top-2 right-4 z-10">
+                          <Badge className="bg-accent text-accent-foreground text-sm px-2 py-0.5 inline-flex items-center">
+                            <Heart className="h-0.5 w-0.5 mr-0.5" fill="currentColor" />
+                            Featured
+                          </Badge>
+                        </div>
+                      )}
+
+                      <div className="mb-6 flex-1 overflow-auto">
+                        <h2 className="text-3xl font-bold mb-2">{item.title}</h2>
+                        <p className="text-muted-foreground text-lg">{item.desc}</p>
+                      </div>
+
+                      <div className="mt-4">
+                        <div className="flex flex-wrap gap-4">
+                          <Button size="lg" className="bg-accent hover:bg-accent/90" onClick={() => router.push(`/booking?look=${item.id}`)}>
+                            <Calendar className="mr-2 h-5 w-5" />
+                            Book This Look
+                          </Button>
+                          <Button size="lg" variant="outline" onClick={() => handleShare(item)}>
+                            <Share2 className="mr-2 h-5 w-5" />
+                            Share
+                          </Button>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -371,22 +208,21 @@ export default function GalleryPage() {
         </div>
       </section>
 
-      {/* Call to Action */}
-      <section className="py-16 bg-muted/30">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl font-bold text-foreground mb-4">Ready for Your Transformation?</h2>
-          <p className="text-lg text-muted-foreground mb-8">
-            Let our expert stylists create your perfect look. Book your consultation today.
+      {/* CTA */}
+      <section className="py-20 bg-primary text-primary-foreground text-center">
+        <div className="max-w-4xl mx-auto px-6">
+          <h2 className="text-4xl font-bold mb-6">Your Turn to Shine</h2>
+          <p className="text-xl mb-10 opacity-90">
+            Book your appointment at Glamour Hub and let us create magic for you
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90">
-              <Calendar className="mr-2 h-5 w-5" />
-              Book Consultation
-            </Button>
-            <Button size="lg" variant="outline">
-              View Services & Pricing
-            </Button>
-          </div>
+          <Button
+            size="lg"
+            onClick={() => router.push("/booking")}
+            className="bg-accent hover:bg-accent/90 text-accent-foreground text-lg px-12"
+          >
+            <Calendar className="mr-3 h-6 w-6" />
+            Book Now
+          </Button>
         </div>
       </section>
 

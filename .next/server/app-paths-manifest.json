@@ -1,0 +1,11 @@
+{
+  "/api/send-email/route": "app/api/send-email/route.js",
+  "/_not-found/page": "app/_not-found/page.js",
+  "/about/page": "app/about/page.js",
+  "/contact/page": "app/contact/page.js",
+  "/services/page": "app/services/page.js",
+  "/booking/page": "app/booking/page.js",
+  "/gallery/page": "app/gallery/page.js",
+  "/shop/page": "app/shop/page.js",
+  "/page": "app/page.js"
+}
