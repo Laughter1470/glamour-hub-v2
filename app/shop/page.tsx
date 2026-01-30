@@ -138,7 +138,6 @@ export default function ShopPage() {
   const [toastMessage, setToastMessage] = useState<string | null>(null)
   const [checkoutStage, setCheckoutStage] = useState<'items' | 'details'>('items')
   const [isPaying, setIsPaying] = useState(false)  // Add this to prevent sheet closing during payment
-  const [isMobile, setIsMobile] = useState(false)
 
   const cartItems = useMemo(() => Object.values(cart), [cart])
   const totalAmount = useMemo(() => cartItems.reduce((sum, item) => sum + item.product.price * item.qty, 0), [cartItems])
@@ -228,15 +227,6 @@ www.glamourhub.ng
   document.head.appendChild(script);
 
   // Cleanup: Remove script when component unmounts
-
-  useEffect(() => {
-  const checkMobile = () => setIsMobile(window.innerWidth < 768)
-  checkMobile()
-  window.addEventListener('resize', checkMobile)
-  return () => window.removeEventListener('resize', checkMobile)
-}, [])
-
-
   return () => {
     if (document.head.contains(script)) {
       document.head.removeChild(script);
@@ -738,6 +728,9 @@ callback: async (response: { status: string; tx_ref: string; transaction_id?: nu
       {selectedProduct?.name}
     </h2>
   </div>
+  
+  {/* SINGLE UNIVERSAL CLOSE BUTTON */}
+  
 </div>
 
         {/* DESCRIPTION + SPECS */}
@@ -800,13 +793,15 @@ callback: async (response: { status: string; tx_ref: string; transaction_id?: nu
               <ShoppingCart className="w-4 h-4 mr-2" />
               Add to Cart
             </Button>
-            <Button
-              variant="outline"
-              className="px-4 h-12 text-sm md:text-base flex items-center justify-center"
-              onClick={() => setSelectedProduct(null)}
-            >
-              {isMobile ? "Close" : "View Similar"}
-            </Button>
+           <Button
+  variant="outline"
+  className="h-16 px-8 text-lg font-semibold border-2 hover:bg-accent/10 flex items-center gap-2"
+  onClick={() => setSelectedProduct(null)}
+>
+  <X className="h-4 w-4 sm:hidden" />
+  <span className="sm:hidden">Close</span>
+  <span className="hidden sm:inline">View Similar Products</span>
+</Button>
           </div>
         </div>
       </div>
