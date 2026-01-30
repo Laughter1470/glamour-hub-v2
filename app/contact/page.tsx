@@ -327,12 +327,12 @@ export default function ContactPage() {
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="flex justify-between">
-                    <span>Monday – Saturday</span>
+                    <span>Monday – Friday</span>
                     <Badge variant="secondary">9:00 AM – 7:00 PM</Badge>
                   </div>
                   <div className="flex justify-between">
-                    <span>Sunday</span>
-                    <Badge variant="secondary">11:00 AM – 5:00 PM</Badge>
+                    <span>Saturday</span>
+                    <Badge variant="secondary">10:00 AM – 6:00 PM</Badge>
                   </div>
                   <p className="text-sm text-muted-foreground pt-4">
                     We recommend booking in advance, especially on weekends!

@@ -5,8 +5,8 @@ import { Calendar, MapPin, Star, ShoppingBag } from "lucide-react"
 
 export function HeroSection() {
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Background Image – you can keep or replace later */}
+    <section className="relative overflow-hidden bg-primary">
+      {/* Background Image */}
       <div className="absolute inset-0 z-0">
         <img
           src="/luxury-beauty-salon-interior-with-elegant-styling-.png"
@@ -17,7 +17,7 @@ export function HeroSection() {
       </div>
 
       {/* Content */}
-      <div className="relative z-10 text-center text-white max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="relative z-10 flex flex-col justify-center items-center text-center text-white px-4 sm:px-6 lg:px-8 py-16 md:py-24 lg:py-32 min-h-[calc(100dvh-4rem)]">
         {/* Rating */}
         <div className="mb-6">
           <div className="flex items-center justify-center space-x-1 mb-4">
@@ -45,7 +45,7 @@ export function HeroSection() {
           <Link href="/booking">
             <Button
               size="lg"
-              className="bg-accent hover:bg-accent/90 text-accent-foreground font-semibold px-8 py-3 text-lg shadow-xl"
+              className="bg-accent hover:bg-accent/70 text-accent-foreground font-semibold px-8 py-3 text-lg shadow-xl"
             >
               <Calendar className="mr-3 h-6 w-6" />
               Book Appointment
@@ -56,7 +56,7 @@ export function HeroSection() {
             <Button
               size="lg"
               variant="outline"
-              className="border-white text-white hover:bg-white hover:text-black font-semibold px-8 py-3 text-lg backdrop-blur-sm bg-white/10"
+              className="border-white text-white hover:bg-white hover:text-black font-semibold px-8 py-3 backdrop-blur-sm bg-white/10"
             >
               <ShoppingBag className="mr-3 h-6 w-6" />
               Shop Beauty Products
@@ -74,9 +74,10 @@ export function HeroSection() {
       {/* Scroll Indicator */}
       <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
         <div className="w-6 h-10 border-2 border-white/40 rounded-full flex justify-center">
-          <div className="w-1 h-3 bg-white/70 rounded-full mt-2 animate-pulse" />
+          <div className="w-1 h-3 bg-white/70 rounded-full mt-2" />
         </div>
       </div>
     </section>
   )
 }
+

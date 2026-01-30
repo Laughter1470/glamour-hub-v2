@@ -1,7 +1,8 @@
 // app/booking/page.tsx
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"  // ← ADD useEffect here
+import { useRouter } from "next/navigation"
 import { Navigation } from "@/components/navigation"
 import { Footer } from "@/components/footer"
 import { Button } from "@/components/ui/button"
@@ -12,6 +13,12 @@ import { Calendar } from "@/components/ui/calendar"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
+import { 
+  Dialog, 
+  DialogContent, 
+  DialogHeader, 
+  DialogTitle 
+} from "@/components/ui/dialog"
 import { Separator } from "@/components/ui/separator"
 import {
   Scissors,
@@ -26,7 +33,27 @@ import {
   CheckCircle,
   ChevronRight,
   X,
+  Link,
+  Contact,
+  Download,
 } from "lucide-react"
+
+function Toast({ message, onClose }: { message: string; onClose: () => void }) {
+  useEffect(() => {
+    const t = setTimeout(onClose, 4000)
+    return () => clearTimeout(t)
+  }, [onClose])
+  return (
+    <div className="fixed top-20 right-6 z-[60] p-4 sm:p-5 bg-black text-white rounded-2xl shadow-2xl flex items-center gap-3 border border-accent/20 max-w-sm">
+      <div className="flex-1">
+        <p className="font-medium text-sm whitespace-pre-line">{message}</p>
+      </div>
+      <Button variant="ghost" size="icon" onClick={onClose} className="h-8 w-8 p-0 text-white hover:bg-white/10">
+        <X className="h-4 w-4" />
+      </Button>
+    </div>
+  )
+}
 
 type Service = {
   name: string
@@ -252,9 +279,10 @@ const TERMS_AND_CONDITIONS = `General Terms & Conditions
 Contact: 0703 511 8531 | @glamourhub_ng`
 
 
-const timeSlots = ["9:00 AM", "10:00 AM", "11:00 AM", "12:00 AM", "1:00 PM", "2:00 PM", "3:00 PM", "4:00 PM", "5:00 PM"]
+const timeSlots = ["9:00 AM", "10:00 AM", "11:00 AM", "12:00 PM", "1:00 PM", "2:00 PM", "3:00 PM", "4:00 PM", "5:00 PM"]
 
 export default function BookingPage() {
+  const router = useRouter()
   const [selectedService, setSelectedService] = useState<Service | null>(null)
   const [date, setDate] = useState<Date | undefined>(undefined)
   const [time, setTime] = useState("")
@@ -265,6 +293,7 @@ export default function BookingPage() {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [modalTitle, setModalTitle] = useState("")
   const [modalContent, setModalContent] = useState("")
+  const [toastMessage, setToastMessage] = useState<string | null>(null)
 
   const parsePriceToNumber = (priceStr: string | undefined) => {
     if (!priceStr) return 0
@@ -349,7 +378,8 @@ const amountToCharge = totalPriceNumber * (selectedDepositOption / 100)
       console.error("Failed to communicate with email API", err)
     }
 
-    alert(`Booking confirmed!\nReference: ${transactionId}\nAmount Paid: ₦${depositAmount.toLocaleString()}`)
+    setToastMessage(`✅ Booking confirmed!\nReference: ${transactionId}\nPaid: ₦${depositAmount.toLocaleString()}`)
+setTimeout(() => setToastMessage(null), 4000)
 
     const receipt = `GLAMOUR HUB OFFICIAL APPOINTMENT LISTING
 Thank you for booking with us!
@@ -398,6 +428,7 @@ We look forward to making you look & feel fabulous!
   const testAmount = amountToCharge // use the percentage amount
   onBookingConfirmed(testRef, testAmount)
 }
+{toastMessage && <Toast message={toastMessage} onClose={() => setToastMessage(null)} />}
 
   return (
     <main className="min-h-screen bg-background">
@@ -405,26 +436,32 @@ We look forward to making you look & feel fabulous!
 
       {/* Hero */}
       <section className="relative bg-gradient-to-br from-accent/50 to-muted/50 py-24 text-center">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-bold mb-4 sm:mb-6 leading-tight">
-            Book Your <span className="text-accent">Appointment</span>
-          </h1>
-          <p className="text-sm sm:text-base lg:text-lg text-muted-foreground max-w-2xl mx-auto mb-6 sm:mb-8">
-            Select your desired service and secure your spot instantly
-          </p>
-          <div className="flex flex-col sm:flex-row justify-center items-center gap-3 sm:gap-4 mt-6 sm:mt-8">
-            <Badge variant="secondary" className="px-4 py-2 sm:px-5 sm:py-3 text-xs sm:text-sm">
-              <MapPin className="h-4 w-4 sm:h-5 sm:w-5 mr-2" />
-              <span className="hidden sm:inline">Holy Trinity Church</span>
-              <span className="sm:hidden">Holy Trinity</span>
-            </Badge>
-            <Badge variant="secondary" className="px-4 py-2 sm:px-5 sm:py-3 text-xs sm:text-sm">
-              <Phone className="h-4 w-4 sm:h-5 sm:w-5 mr-2" />
-              0703 511 8531
-            </Badge>
-          </div>
-        </div>
-      </section>
+  <div className="max-w-7xl mx-auto px-4 sm:px-6">
+    <h1 className="text-3xl sm:text-5xl lg:text-6xl font-bold mb-4 sm:mb-6 leading-tight">
+      Book Your <span className="text-accent">Appointment</span>
+    </h1>
+    <p className="text-sm sm:text-base lg:text-lg text-muted-foreground max-w-2xl mx-auto mb-6 sm:mb-8">
+      Select your desired service and secure your spot instantly
+    </p>
+    <div className="flex flex-col sm:flex-row gap-4 justify-center">
+      <Button
+        size="lg"
+        onClick={() => router.push("/contact")}
+        className="bg-accent hover:bg-accent/90 text-accent-foreground font-semibold px-8"
+      >
+        <Contact className="mr-2 h-5 w-5" />
+        Contact Us
+      </Button>
+      <Button size="lg" variant="outline" asChild className="px-8">
+        <a href="tel:+2347035118531">
+          <Phone className="mr-2 h-5 w-5" />
+          Call 0703 511 8531
+        </a>
+      </Button>
+    </div>
+  </div>
+</section>
+
 
       <section className="py-12 sm:py-16 px-4 sm:px-6">
         <div className="max-w-6xl mx-auto">
@@ -730,74 +767,64 @@ We look forward to making you look & feel fabulous!
       </section>
 
       {showReceipt && (
-  <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-    <div className="bg-white rounded-2xl max-w-lg w-full max-h-[80vh] overflow-y-auto shadow-2xl border">
-      {/* Header */}
-      <div className="sticky top-0 bg-white p-6 border-b flex justify-between items-center">
-        <h3 className="text-xl font-bold text-gray-900">GLAMOUR HUB RECEIPT</h3>
-        <Button
-          variant="ghost"
-          size="icon"
-          onClick={() => {
-            setShowReceipt(false)
-            resetBookingState()
-          }}
-          className="h-10 w-10"
-        >
-          <X className="h-5 w-5" />
-        </Button>
-      </div>
-      
-      {/* Compact Receipt Content */}
-      <div className="p-6 text-sm text-gray-700 leading-relaxed">
-        <div className="space-y-4 whitespace-pre-wrap break-words">
-          {receiptText.split('\n').map((line, i) => (
-            line.trim() ? (
-              <div key={i} className="py-1">
-                {line.includes('━━━━━━━━') ? (
-                  <div className="border-t border-gray-300 my-2" />
-                ) : line.startsWith('• ') ? (
-                  <div className="flex items-center gap-2 pl-4">
-                    <div className="w-1.5 h-1.5 bg-accent rounded-full" />
-                    <span>{line.slice(2)}</span>
-                  </div>
-                ) : (
-                  <p className="break-words">{line}</p>
-                )}
-              </div>
-            ) : (
-              <div key={i} className="h-2" />
-            )
-          ))}
-        </div>
-      </div>
+<Dialog open={showReceipt} onOpenChange={() => setShowReceipt(false)}>
+  <DialogContent className="max-w-md w-[90vw] sm:w-[500px] max-h-[85vh] mx-auto p-4 sm:p-6 bg-background rounded-2xl">
+    
+    {/* HEADER */}
+    <DialogHeader className="mb-6 pb-4 border-b border-border">
+      <DialogTitle className="text-2xl font-bold flex items-center gap-2 text-green-600">
+        <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
+        Booking Confirmed!
+      </DialogTitle>
+    </DialogHeader>
 
-      {/* Action Buttons */}
-      <div className="p-6 pt-4 border-t bg-white sticky bottom-0 flex flex-col sm:flex-row gap-3">
-        <Button
-          onClick={() => {
-            if (typeof navigator !== "undefined" && navigator.clipboard) {
-              navigator.clipboard.writeText(receiptText)
-            }
-          }}
-          className="flex-1 bg-accent hover:bg-accent/90 text-white h-11 font-semibold"
-        >
-          📋 Copy Receipt
-        </Button>
-        <Button
-          variant="outline"
-          onClick={() => {
-            setShowReceipt(false)
-            resetBookingState()
-          }}
-          className="flex-1 h-11 font-semibold"
-        >
-          Close
-        </Button>
-            </div>
-          </div>
-        </div>
-      )}
+    {/* SCROLLABLE RECEIPT */}
+    <div className="max-h-72 overflow-y-auto pr-2 mb-6 scrollbar-thin scrollbar-thumb-muted scrollbar-track-transparent">
+      <pre className="bg-gradient-to-br from-gray-900 to-black text-white p-6 rounded-xl text-sm leading-relaxed font-mono whitespace-pre-wrap break-words font-medium">
+        {receiptText}
+      </pre>
+    </div>
+
+    {/* FIXED BOTTOM BUTTONS */}
+    <div className="flex gap-3 pt-4 border-t border-border">
+      <Button 
+  className="flex-1 bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-700 hover:to-green-700 text-white font-semibold py-4 rounded-xl shadow-lg h-14 text-base transition-all"
+  onClick={async () => {
+    try {
+      // Modern clipboard API (works on desktop + most mobile)
+      await navigator.clipboard.writeText(receiptText)
+    } catch (err) {
+      // Mobile-safe fallback
+      const textArea = document.createElement("textarea")
+      textArea.value = receiptText
+      textArea.style.position = "fixed"
+      textArea.style.left = "-999999px"
+      textArea.style.top = "-999999px"
+      textArea.style.opacity = "0"
+      document.body.appendChild(textArea)
+      textArea.focus()
+      textArea.select()
+      
+      try {
+        document.execCommand('copy')
+      } finally {
+        textArea.remove()
+      }
+    } finally {
+      // Always close modal
+      setShowReceipt(false)
+      resetBookingState()
+    }
+  }}
+>
+  <Download className="mr-2 h-5 w-5" />
+  Copy & Close
+</Button>
+    </div>
+  </DialogContent>
+</Dialog>
+)}
+
       {isModalOpen && (
   <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
     <div className="bg-white rounded-2xl max-w-2xl w-full max-h-[80vh] overflow-y-auto shadow-2xl border">

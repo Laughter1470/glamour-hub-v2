@@ -459,91 +459,92 @@ callback: async (response: { status: string; tx_ref: string; transaction_id?: nu
         </div>
       </section>
 
-      {/* PRODUCTS */}
-<section className="py-16 px-6">
+      {/* PRODUCTS - ALIEXPRESS STYLE (MOBILE + DESKTOP) */}
+<section className="py-12 px-4 sm:px-6">
   <div className="max-w-7xl mx-auto">
-    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+
+    {/* RESPONSIVE GRID: 2 MOBILE → 3 TABLET → 5 DESKTOP */}
+    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-4 lg:gap-5">
       {filteredProducts.map(product => (
-        <Card
-          key={product.id}
-          className="group hover:shadow-2xl transition-all duration-300 border-0 overflow-hidden flex flex-col bg-card rounded-2xl"
+        <div 
+          key={product.id} 
+          className="group bg-card border rounded-xl overflow-hidden hover:shadow-xl transition-all duration-200 flex flex-col h-full cursor-pointer"
+          onClick={() => setSelectedProduct(product)} // ✅ CLICK TO OPEN MODAL
         >
-          {/* Image Area – Bigger & Beautiful */}
-          <div
-            className="relative bg-gradient-to-br from-gray-50 to-gray-100 cursor-pointer h-64 sm:h-72 md:h-80 lg:h-96 flex-shrink-0 overflow-hidden"
-            onClick={() => setSelectedProduct(product)}
-          >
+          
+          {/* IMAGE - RESPONSIVE ASPECT */}
+          <div className="relative aspect-[3/4] overflow-hidden bg-muted/50 group-hover:scale-[1.02] transition-transform duration-200">
             <img
-              src={product.image || "https://via.placeholder.com/600x800.png?text=No+Image"}
+              src={product.image || "https://via.placeholder.com/300x400"}
               alt={product.name}
-              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+              loading="lazy"
             />
             
-            {/* Bestseller Badge */}
-            {product.bestseller && (
-              <Badge className="absolute top-4 left-4 bg-accent text-white font-medium shadow-lg">
-                Bestseller
-              </Badge>
-            )}
-
-            {/* Favorite Button */}
-            <Button
-              size="icon"
-              variant="ghost"
-              onClick={(e) => {
-                e.stopPropagation()
-                toggleFavorite(product.id)
-              }}
-              className="absolute top-4 right-4 bg-white/95 hover:bg-white backdrop-blur-sm shadow-xl border border-gray-200 rounded-full h-10 w-10"
-            >
-              <Heart
-                className={`h-5 w-5 transition-colors ${
-                  favorites.includes(product.id)
-                    ? "fill-accent text-accent"
-                    : "text-gray-600"
-                }`}
-              />
-            </Button>
-          </div>
-
-          {/* Card Content */}
-          <CardContent className="p-5 flex-1 flex flex-col justify-between">
-            <div>
-              <h3 className="font-bold text-lg line-clamp-2 mb-2">{product.name}</h3>
-              <p className="text-sm text-muted-foreground line-clamp-2 mb-4">
-                {product.desc}
-              </p>
-
-              <div className="flex items-center gap-1 mb-4">
-                {[...Array(5)].map((_, i) => (
-                  <Star
-                    key={i}
-                    className={`h-4 w-4 ${
-                      i < Math.floor(product.rating)
-                        ? "fill-accent text-accent"
-                        : "text-muted"
-                    }`}
-                  />
-                ))}
-                <span className="text-xs text-muted-foreground ml-1">
-                  ({product.reviews})
-                </span>
-              </div>
-            </div>
-
-            <div className="flex justify-between items-center mt-4">
-              <span className="text-2xl font-bold text-accent">
-                {formatPrice(product.price)}
-              </span>
+            {/* QUICK ACTION BUTTONS - DESKTOP ONLY */}
+            <div className="absolute top-2 right-2 flex gap-1 opacity-0 lg:group-hover:opacity-100 transition-all duration-200">
               <Button
-                onClick={() => addToCart(product)}
-                className="bg-black hover:bg-gray-900 text-white rounded-xl"
+                size="sm"
+                variant="ghost"
+                className="h-8 w-8 bg-white/90 hover:bg-white rounded-full p-0 shadow-md"
+                onClick={(e) => {
+                  e.stopPropagation() // Prevent modal open
+                  toggleFavorite(product.id)
+                }}
               >
-                <Plus className="h-5 w-5" />
+                <Heart className={`h-4 w-4 transition-colors ${favorites.includes(product.id) ? "fill-accent text-accent" : "text-gray-600"}`} />
               </Button>
             </div>
-          </CardContent>
-        </Card>
+
+            {/* BESTSELLER BADGE */}
+            {product.bestseller && (
+              <div className="absolute top-2 left-2 bg-accent/90 text-accent-foreground text-xs font-bold px-2 py-1 rounded-full shadow-lg">
+                🔥 HOT
+              </div>
+            )}
+          </div>
+
+          {/* CONTENT - COMPACT & RESPONSIVE */}
+          <div className="p-2 sm:p-3 flex flex-col flex-1">
+            {/* CATEGORY TAG */}
+            <span className="text-xs bg-accent/10 text-accent px-1.5 py-0.5 rounded-full w-fit mb-1">
+              {product.category}
+            </span>
+
+            {/* TITLE - RESPONSIVE SIZING */}
+            <h3 className="font-semibold text-xs sm:text-sm leading-tight line-clamp-2 mb-1 sm:mb-2 text-foreground group-hover:text-accent transition-colors">
+              {product.name}
+            </h3>
+
+            {/* RATING - SMALLER ON MOBILE */}
+            <div className="flex items-center gap-1 mb-2 sm:mb-3">
+              {[...Array(5)].map((_, i) => (
+                <Star
+                  key={i}
+                  className={`h-3 w-3 sm:h-4 sm:w-4 ${i < Math.floor(product.rating) ? "fill-accent text-accent" : "text-muted-foreground"}`}
+                />
+              ))}
+              <span className="text-xs text-muted-foreground">({product.reviews.toLocaleString()})</span>
+            </div>
+
+            {/* PRICE & BUTTON - STICKY BOTTOM */}
+            <div className="flex items-center justify-between mt-auto pt-1 sm:pt-2">
+              <div className="text-base sm:text-lg font-bold text-accent">
+                {formatPrice(product.price)}
+              </div>
+              <Button
+                size="sm"
+                className="bg-accent hover:bg-accent/90 text-accent-foreground px-3 py-1 text-xs sm:text-sm font-semibold shadow-md h-8 sm:h-9 rounded-lg ml-2 flex-shrink-0"
+                onClick={(e) => {
+                  e.stopPropagation() // Prevent modal open
+                  addToCart(product)
+                }}
+              >
+                ADD
+              </Button>
+            </div>
+          </div>
+        </div>
       ))}
     </div>
   </div>
@@ -686,84 +687,162 @@ callback: async (response: { status: string; tx_ref: string; transaction_id?: nu
         </SheetContent>
       </Sheet>
 
-      {/* PRODUCT MODAL */}
+      {/* PERFECT MOBILE + DESKTOP PRODUCT MODAL */}
 <Dialog open={!!selectedProduct} onOpenChange={() => setSelectedProduct(null)}>
-  <DialogContent className="max-w-4xl p-0 bg-background overflow-hidden rounded-2xl">
-
-    <div className="flex flex-col md:flex-row gap-0 items-stretch">
-
-      {/* LEFT SIDE — FULL IMAGE */}
-      <div className="md:w-3/6 relative h-80 md:h-[600px] max-h-[80vh] bg-gray-50 border-r border-border">
+  <DialogContent className="p-0 bg-background rounded-2xl max-w-5xl w-full max-h-[95vh] mx-auto">
+    
+    {/* MOBILE: BOTTOM SHEET STYLE | DESKTOP: SIDE-BY-SIDE */}
+    <div className="flex flex-col h-[90vh] md:h-auto md:flex-row">
+      
+      {/* IMAGE - FULL WIDTH MOBILE, HALF DESKTOP */}
+      <div className="w-full md:w-1/2 h-72 sm:h-80 md:h-full bg-gray-50 rounded-t-2xl md:rounded-l-2xl md:rounded-tr-none overflow-hidden relative border-b md:border-b-0 md:border-r">
         <img
-          src={selectedProduct?.image || "https://via.placeholder.com/800"}
-          alt={selectedProduct?.name}
-          className="absolute inset-0 w-full h-full object-cover"
-        />
+  src={selectedProduct?.image || "https://via.placeholder.com/500x500"}
+  alt={selectedProduct?.name}
+  className="w-full h-full object-cover object-center"
+/>
+        
+        {/* MOBILE CLOSE BUTTON */}
+        <Button
+          variant="ghost"
+          size="sm"
+          className="absolute -top-12 left-1/2 transform -translate-x-1/2 md:hidden bg-white shadow-lg rounded-full h-10 w-10 p-0 z-20"
+          onClick={() => setSelectedProduct(null)}
+        >
+          <X className="h-4 w-4" />
+        </Button>
       </div>
 
-      {/* RIGHT SIDE — PRODUCT DETAILS */}
-      <div className="md:w-3/6 p-6 md:p-8 flex flex-col min-w-0">
+      {/* CONTENT */}
+      <div className="flex-1 p-4 md:p-6 flex flex-col min-h-0">
+        
+        {/* HEADER - SINGLE CLOSE BUTTON */}
+<div className="relative mb-4 md:mb-6 pb-4 border-b">
+  <div className="pr-12 md:pr-16"> {/* Space for close button */}
+    {selectedProduct?.bestseller && (
+      <Badge className="mb-2 bg-orange-500 hover:bg-orange-600 text-white text-xs px-2 py-1">
+        🔥 Best Seller
+      </Badge>
+    )}
+    <h2 className="text-lg md:text-xl lg:text-2xl font-bold text-foreground leading-tight line-clamp-2">
+      {selectedProduct?.name}
+    </h2>
+  </div>
+</div>
 
-        {/* TITLE + BADGE */}
-        <div className="mb-6">
-          {selectedProduct?.bestseller && (
-            <div className="mb-3">
-              <Badge className="bg-accent text-accent-foreground font-semibold shadow-sm">Bestseller</Badge>
-            </div>
-          )}
-
-          <h2 className="text-3xl font-bold text-foreground leading-tight">
-            {selectedProduct?.name}
-          </h2>
-        </div>
-
-        {/* DESCRIPTION (scrollable if long) */}
-        <div className="flex-1 overflow-auto mb-6 pr-1">
-          <p className="text-lg text-muted-foreground leading-relaxed whitespace-pre-line">
+        {/* DESCRIPTION + SPECS */}
+        <div className="flex-1 overflow-y-auto mb-6 pr-1 max-h-64 md:max-h-none">
+          <p className="text-sm md:text-base text-muted-foreground leading-relaxed mb-6 line-clamp-6 md:line-clamp-none whitespace-pre-line">
             {selectedProduct?.desc}
           </p>
+
+          {/* SPECS GRID */}
+          <div className="grid grid-cols-2 gap-3 mb-6 text-sm">
+            <div className="flex items-center gap-2 p-3 bg-muted/50 rounded-xl">
+              <Star className="h-4 w-4 fill-accent text-accent flex-shrink-0" />
+              <div>
+                <div className="font-semibold text-foreground text-xs">Rating</div>
+                <div className="text-muted-foreground">{selectedProduct?.rating} ★</div>
+              </div>
+            </div>
+            <div className="flex items-center gap-2 p-3 bg-muted/50 rounded-xl">
+              <Package className="h-4 w-4 text-accent flex-shrink-0" />
+              <div>
+                <div className="font-semibold text-foreground text-xs">Reviews</div>
+                <div className="text-muted-foreground">{selectedProduct?.reviews.toLocaleString()}</div>
+              </div>
+            </div>
+            <div className="flex items-center gap-2 p-3 bg-muted/50 rounded-xl">
+              <div className="w-4 h-4 bg-accent rounded-sm flex-shrink-0" />
+              <div>
+                <div className="font-semibold text-foreground text-xs">Category</div>
+                <div className="text-muted-foreground">{selectedProduct?.category}</div>
+              </div>
+            </div>
+            <div className="flex items-center gap-2 p-3 bg-muted/50 rounded-xl">
+              <div className="w-2 h-6 bg-green-500 rounded-sm flex-shrink-0" />
+              <div>
+                <div className="font-semibold text-foreground text-xs">Stock</div>
+                <div className="text-muted-foreground">In Stock</div>
+              </div>
+            </div>
+          </div>
         </div>
 
-        {/* PRICE + BUTTON */}
-        <div className="mt-auto">
-          <div className="mb-5">
-            <span className="text-4xl font-bold text-accent tracking-tight">
+        {/* BOTTOM ACTION BAR */}
+        <div className="border-t pt-4 space-y-3">
+          <div className="flex items-baseline justify-between">
+            <span className="text-xl md:text-2xl lg:text-3xl font-black text-accent">
               {selectedProduct && formatPrice(selectedProduct.price)}
             </span>
+            <div className="text-xs md:text-sm text-muted-foreground hidden sm:block">
+              Free shipping • Same day dispatch
+            </div>
           </div>
-
-          <Button
-            onClick={() => {
-              selectedProduct && addToCart(selectedProduct);
-              setSelectedProduct(null);
-              setIsCartOpen(true);
-            }}
-            className="w-full bg-black hover:bg-gray-900 text-white font-semibold py-6 text-lg rounded-xl shadow-lg transition-all"
-          >
-            Add to Cart
-          </Button>
+          
+          <div className="flex gap-2">
+            <Button
+              onClick={() => {
+                selectedProduct && addToCart(selectedProduct);
+              }}
+              className="flex-1 bg-gradient-to-r from-black to-gray-900 hover:from-gray-900 hover:to-black text-white font-bold py-3 px-6 text-sm md:text-base shadow-xl rounded-xl h-12 transition-all"
+            >
+              <ShoppingCart className="w-4 h-4 mr-2" />
+              Add to Cart
+            </Button>
+            <Button
+              variant="outline"
+              className="px-4 h-12 text-sm md:text-base flex items-center justify-center"
+              onClick={() => setSelectedProduct(null)}
+            >
+              {window.innerWidth < 768 ? "Close" : "View Similar"}
+            </Button>
+          </div>
         </div>
-
       </div>
-
     </div>
-    
   </DialogContent>
 </Dialog>
 
 
-      {/* RECEIPT MODAL */}
-      <Dialog open={!!receipt} onOpenChange={() => setReceipt(null)}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle className="text-2xl font-bold text-green-600">Payment Successful!</DialogTitle>
-          </DialogHeader>
-          <pre className="bg-black text-white p-6 rounded-lg text-sm font-mono whitespace-pre-wrap">{receipt}</pre>
-          <Button className="w-full bg-accent hover:bg-accent/90 text-white" onClick={copyReceipt}>
-            <Download className="mr-2 h-4 w-4" /> Copy Receipt
-          </Button>
-        </DialogContent>
-      </Dialog>
+      {/* MOBILE COMPACT RECEIPT MODAL */}
+<Dialog open={!!receipt} onOpenChange={() => setReceipt(null)}>
+  <DialogContent className="max-w-md w-[90vw] sm:w-[500px] max-h-[85vh] mx-auto p-4 sm:p-6 bg-background rounded-2xl">
+    
+    {/* HEADER */}
+    <DialogHeader className="mb-6 pb-4 border-b border-border">
+      <DialogTitle className="text-2xl font-bold flex items-center gap-2 text-green-600">
+        <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
+        Payment Successful!
+      </DialogTitle>
+    </DialogHeader>
+
+    {/* SCROLLABLE RECEIPT */}
+    <div className="max-h-80 overflow-y-auto pr-2 mb-6 scrollbar-thin scrollbar-thumb-muted scrollbar-track-transparent">
+      <pre className="bg-gradient-to-br from-gray-900 to-black text-white p-6 rounded-xl text-sm leading-relaxed font-mono whitespace-pre-wrap break-words font-medium">
+        {receipt}
+      </pre>
+    </div>
+
+    {/* FIXED BOTTOM BUTTONS */}
+    <div className="flex gap-3 pt-4 border-t border-border">
+      <Button 
+        className="flex-1 bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-700 hover:to-green-700 text-white font-semibold py-4 rounded-xl shadow-lg h-14 text-base transition-all"
+        onClick={copyReceipt}
+      >
+        <Download className="mr-2 h-5 w-5" />
+        Copy Receipt
+      </Button>
+      <Button
+        variant="outline"
+        className="px-6 h-14 text-base font-semibold"
+        onClick={() => setReceipt(null)}
+      >
+        Done
+      </Button>
+    </div>
+  </DialogContent>
+</Dialog>
 
       {toastMessage && <Toast message={toastMessage} onClose={() => setToastMessage(null)} />}
 

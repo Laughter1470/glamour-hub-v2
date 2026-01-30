@@ -156,22 +156,23 @@ export default function GalleryPage() {
                   </Card>
                 </DialogTrigger>
 
-                <DialogContent className="max-w-5xl p-0 bg-background">
-                  <div className="flex flex-col md:flex-row">
-                    <div className="md:w-1/2 flex items-center justify-center bg-black/5">
-                      <div className="relative w-full h-[80vh] max-h-[80vh]">
-                        <Image
-                          src={`/gallery/${item.id}.jpg`}
-                          alt={item.title}
-                          fill
-                          sizes="(max-width: 768px) 100vw, 50vw"
-                          loading="eager"
-                          priority
-                          quality={90}
-                          className="object-contain"
-                        />
-                      </div>
-                    </div>
+<DialogContent className="max-w-5xl p-0 bg-background">
+  <div className="flex flex-col md:flex-row">
+    <div className="lg:w-1/2 w-full flex items-center justify-center bg-black/5 p-4 lg:p-0 min-h-[50vh]">
+      <div className="relative w-full h-[60vh] lg:h-[80vh] max-h-[60vh] lg:max-h-[85vh] flex items-center justify-center">
+        <Image
+          src={`/gallery/${item.id}.jpg`}
+          alt={item.title}
+          fill
+          sizes="(max-width: 768px) 100vw, 50vw"
+          loading="eager"
+          priority
+          quality={90}
+          className="object-cover"
+        />
+      </div>
+    </div>
+
                     <div className="md:w-1/2 p-6 md:p-8 flex flex-col justify-between relative">
                       {item.featured && (
                         <div className="absolute top-2 right-4 z-10">

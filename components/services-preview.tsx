@@ -146,19 +146,17 @@ export function ServicesPreview() {
           </div>
         </div>
         <style jsx>{`
-          @keyframes scrollServices {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-50%); }
-          }
-          .animate-scroll-services {
-            display: flex;
-            width: max-content;
-            animation: scrollServices 35s linear infinite;
-          }
-          .animate-scroll-services:hover {
-            animation-play-state: paused;
-          }
-        `}</style>
+  @keyframes scrollServices {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+  .animate-scroll-services {
+    display: flex;
+    width: max-content;
+    animation: scrollServices 50s linear infinite;
+  }
+  /* REMOVED: .animate-scroll-services:hover { animation-play-state: paused; } */
+`}</style>
       </div>
     </section>
   )
