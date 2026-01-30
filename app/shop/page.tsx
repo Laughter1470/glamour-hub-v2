@@ -138,6 +138,7 @@ export default function ShopPage() {
   const [toastMessage, setToastMessage] = useState<string | null>(null)
   const [checkoutStage, setCheckoutStage] = useState<'items' | 'details'>('items')
   const [isPaying, setIsPaying] = useState(false)  // Add this to prevent sheet closing during payment
+  const [isMobile, setIsMobile] = useState(false)
 
   const cartItems = useMemo(() => Object.values(cart), [cart])
   const totalAmount = useMemo(() => cartItems.reduce((sum, item) => sum + item.product.price * item.qty, 0), [cartItems])
@@ -227,6 +228,15 @@ www.glamourhub.ng
   document.head.appendChild(script);
 
   // Cleanup: Remove script when component unmounts
+
+  useEffect(() => {
+  const checkMobile = () => setIsMobile(window.innerWidth < 768)
+  checkMobile()
+  window.addEventListener('resize', checkMobile)
+  return () => window.removeEventListener('resize', checkMobile)
+}, [])
+
+
   return () => {
     if (document.head.contains(script)) {
       document.head.removeChild(script);
@@ -795,7 +805,7 @@ callback: async (response: { status: string; tx_ref: string; transaction_id?: nu
               className="px-4 h-12 text-sm md:text-base flex items-center justify-center"
               onClick={() => setSelectedProduct(null)}
             >
-              {window.innerWidth < 768 ? "Close" : "View Similar"}
+              {isMobile ? "Close" : "View Similar"}
             </Button>
           </div>
         </div>
