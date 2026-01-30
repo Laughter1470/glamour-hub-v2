@@ -247,6 +247,7 @@ www.glamourhub.ng
   }, [])
 
  const payWithFlutterwave = () => {
+  if (typeof window === "undefined") return
   if (totalAmount === 0) return setToastMessage("Cart is empty")
   if (!fullName.trim()) return setToastMessage("Please enter your full name")
   const digits = phone.replace(/\D/g, "")
@@ -257,8 +258,9 @@ www.glamourhub.ng
   console.log("Flutterwave payment initiated")
   setIsPaying(true)
 
-  const FlutterwaveCheckout = (window as any).FlutterwaveCheckout
-  if (!FlutterwaveCheckout) {
+  const FlutterwaveCheckout =
+  typeof window !== "undefined" ? (window as any).FlutterwaveCheckout : null
+ {
     console.error("FlutterwaveCheckout not available")
     setToastMessage("Payment gateway loading... please try again")
     setIsPaying(false)
@@ -271,7 +273,11 @@ www.glamourhub.ng
     amount: totalAmount,
     currency: "NGN",
     payment_options: "card, mobilemoney, ussd",
-    redirect_url: window.location.origin + "/shop?payment=success", // optional redirect after payment
+    redirect_url:
+  typeof window !== "undefined"
+    ? window.location.origin + "/shop?payment=success"
+    : undefined,
+ // optional redirect after payment
     customer: {
       email,
       phone_number: phone,
@@ -353,9 +359,10 @@ callback: async (response: { status: string; tx_ref: string; transaction_id?: nu
 }
 
   const copyReceipt = () => {
-    navigator.clipboard.writeText(receipt || "")
-    setToastMessage("Receipt copied to clipboard")
-  }
+    if (typeof navigator !== "undefined") {
+  navigator.clipboard.writeText(receipt || "")
+}
+
 
   // Add this function to test success logic without Paystack
   const testPaymentSuccess = async () => {
@@ -866,4 +873,4 @@ callback: async (response: { status: string; tx_ref: string; transaction_id?: nu
       <Footer />
     </main>
   )
-}
+}}

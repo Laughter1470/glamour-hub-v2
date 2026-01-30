@@ -1,0 +1,12 @@
+{
+  "/_not-found/page": "/_not-found",
+  "/api/send-email/route": "/api/send-email",
+  "/favicon.ico/route": "/favicon.ico",
+  "/about/page": "/about",
+  "/booking/page": "/booking",
+  "/contact/page": "/contact",
+  "/gallery/page": "/gallery",
+  "/services/page": "/services",
+  "/shop/page": "/shop",
+  "/page": "/"
+}
