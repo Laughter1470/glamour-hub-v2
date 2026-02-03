@@ -258,9 +258,8 @@ www.glamourhub.ng
   console.log("Flutterwave payment initiated")
   setIsPaying(true)
 
-  const FlutterwaveCheckout =
-  typeof window !== "undefined" ? (window as any).FlutterwaveCheckout : null
- {
+  const FlutterwaveCheckout = typeof window !== "undefined" ? (window as any).FlutterwaveCheckout : null
+  if (!FlutterwaveCheckout) {
     console.error("FlutterwaveCheckout not available")
     setToastMessage("Payment gateway loading... please try again")
     setIsPaying(false)
@@ -360,9 +359,9 @@ callback: async (response: { status: string; tx_ref: string; transaction_id?: nu
 
   const copyReceipt = () => {
     if (typeof navigator !== "undefined") {
-  navigator.clipboard.writeText(receipt || "")
-}
-
+      navigator.clipboard.writeText(receipt || "")
+    }
+  }
 
   // Add this function to test success logic without Paystack
   const testPaymentSuccess = async () => {
@@ -579,7 +578,13 @@ callback: async (response: { status: string; tx_ref: string; transaction_id?: nu
       </section>
 
       {/* CART SIDEBAR */}
-      <Sheet open={isCartOpen} onOpenChange={(open) => !isPaying && setIsCartOpen(open)}>  
+      {/* Prevent closing during payment */}
+<Sheet
+  open={isCartOpen}
+  onOpenChange={(open) => {
+    if (!isPaying) setIsCartOpen(open)
+  }}
+>
         <SheetTrigger asChild>
           <Button className="fixed bottom-6 right-6 rounded-full h-16 w-16 shadow-2xl bg-black hover:bg-gray-900 z-50">
             <ShoppingCart className="h-7 w-7" />
@@ -696,7 +701,15 @@ callback: async (response: { status: string; tx_ref: string; transaction_id?: nu
 
       {/* PERFECT MOBILE + DESKTOP PRODUCT MODAL */}
 <Dialog open={!!selectedProduct} onOpenChange={() => setSelectedProduct(null)}>
-  <DialogContent className="p-0 bg-background rounded-2xl max-w-5xl w-full max-h-[95vh] mx-auto">
+  <DialogContent
+    className="max-w-4xl p-0 bg-background overflow-hidden rounded-2xl"
+    aria-describedby={undefined}
+  >
+    <DialogHeader className="sr-only">
+      <DialogTitle>
+        {selectedProduct?.name ?? "Product details"}
+      </DialogTitle>
+    </DialogHeader>
     
     {/* MOBILE: BOTTOM SHEET STYLE | DESKTOP: SIDE-BY-SIDE */}
     <div className="flex flex-col h-[90vh] md:h-auto md:flex-row">
@@ -819,14 +832,14 @@ callback: async (response: { status: string; tx_ref: string; transaction_id?: nu
 
       {/* MOBILE COMPACT RECEIPT MODAL */}
 <Dialog open={!!receipt} onOpenChange={() => setReceipt(null)}>
-  <DialogContent className="max-w-md w-[90vw] sm:w-[500px] max-h-[85vh] mx-auto p-4 sm:p-6 bg-background rounded-2xl">
-    
-    {/* HEADER */}
-    <DialogHeader className="mb-6 pb-4 border-b border-border">
-      <DialogTitle className="text-2xl font-bold flex items-center gap-2 text-green-600">
-        <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
+  <DialogContent aria-describedby="receipt-desc">
+    <DialogHeader>
+      <DialogTitle className="text-2xl font-bold text-green-600">
         Payment Successful!
       </DialogTitle>
+      <p id="receipt-desc" className="sr-only">
+        Transaction receipt and order summary
+      </p>
     </DialogHeader>
 
     {/* SCROLLABLE RECEIPT */}
@@ -873,4 +886,4 @@ callback: async (response: { status: string; tx_ref: string; transaction_id?: nu
       <Footer />
     </main>
   )
-}}
+}
